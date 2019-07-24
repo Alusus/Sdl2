@@ -1,0 +1,28 @@
+import "Srl/Console.alusus";
+import "Srl/System.alusus";
+import "Srl/Fs.alusus";
+import "../Sdl.alusus";
+
+if Sdl.init(Sdl.SDL_INIT_JOYSTICK) == 0 {
+  Srl.Console.print("Initialized SDL successfully.\n");
+  if Sdl.Joystick.getCount() > 0 {
+    def joy: ptr[Sdl.Joystick];
+    joy = Sdl.Joystick.open(0);
+    if (joy != 0) {
+      Srl.Console.print("Number of axes for joy 0: %d.\n", Sdl.Joystick.getAxesCount(joy));
+      while 1 {
+        Sdl.Joystick.update();
+        Srl.Console.print("  %d, %d         \r", Sdl.Joystick.getAxis(joy, 0)~cast[Int], Sdl.Joystick.getAxis(joy, 1)~cast[Int]);
+        Srl.Fs.flush(0~cast[ptr[Srl.Fs.File]]);
+        Srl.System.sleep(1000);
+      }
+    } else {
+      Srl.Console.print("Failed to open joystick.\n");
+    }
+  } else {
+    Srl.Console.print("No joystics found.\n");
+  }
+} else {
+  Srl.Console.print("SDL initialization failed.\n");
+}
+

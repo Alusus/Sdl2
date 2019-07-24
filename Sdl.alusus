@@ -1,0 +1,18 @@
+import "globals.alusus";
+import "libSDL2-2.0.so.0";
+
+module Sdl
+{
+  def SDL_INIT_JOYSTICK: 0x00000200;
+  @expname[SDL_Init] function init (flags: Word)=>Int;
+
+  type Joystick
+  {
+    @shared @expname[SDL_NumJoysticks] function getCount ()=>Int;
+    @shared @expname[SDL_JoystickOpen] function open (index: Int)=>ptr[Joystick];
+    @shared @expname[SDL_JoystickNumAxes] function getAxesCount (joy: ptr[Joystick]) => Int;
+    @shared @expname[SDL_JoystickGetAxis] function getAxis (joy: ptr[Joystick], axis: Int) => Int[16];
+    @shared @expname[SDL_JoystickUpdate] function update;
+  };
+};
+
