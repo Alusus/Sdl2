@@ -3,8 +3,39 @@
 عرف طـوب: لقب Sdl؛
 @دمج وحدة Sdl
 {
+  عرف _تهيئة_صوتيات_: 0h00000010;
+  عرف _تهيئة_مرئيات_: 0h00000020;
   عرف _تهيئة_عصا_التحكم_: 0h00000200؛
+
   عرف هيئ: لقب init؛
+  عرف عين_تلميح: لقب setHint؛
+  عرف استشعر_حدث: لقب pollEvent؛
+  
+  عرف حـدث: لقب Event؛
+  @دمج عرف Event:
+  {
+    عرف نوع: لقب eventType؛
+    عرف حشوة: لقب padding؛
+    
+    عرف _خروج_: 0h100u؛
+  }؛
+
+  عرف تـلميحات: {
+    عرف _تسريع_صوان_الصورة_: لقب Hints.FRAMEBUFFER_ACCELERATION؛
+    عرف _رسوم_المشغل_: لقب Hints.RENDER_DRIVER؛
+    عرف _رسوم_مظللات_اوبن_جل_: لقب Hints.RENDER_OPENGL_SHADERS؛
+    عرف _رسوم_جودة_التحجيم_: لقب Hints.RENDER_SCALE_QUALITY؛
+    عرف _رسوم_المزامنة_العمودية_: لقب Hints.RENDER_VSYNC؛
+    عرف _مرئيات_ميز_اكس11_: لقب Hints.VIDEO_X11_XVIDMODE؛
+    عرف _قبض_لوحة_المفاتيح_: لقب Hints.GRAB_KEYBOARD؛
+    عرف _مرئيات_تصغير_عند_تشتت_الانتباه_: لقب Hints.VIDEO_MINIMIZE_ON_FOCUS_LOSS؛
+    عرف _الاتجاهات_: لقب Hints.ORIENTATIONS؛
+    عرف _تمكين_مدخلات_اكس_: لقب Hints.XINPUT_ENABLED؛
+    عرف _اعدادات_عصا_التحكم_: لقب Hints.GAMECONTROLLERCONFIG؛
+    عرف _عصا_التحكم_تمكين_احداث_الخلفية_: لقب Hints.JOYSTICK_ALLOW_BACKGROUND_EVENTS؛
+    عرف _تمكين_الأعلى_: لقب Hints.ALLOW_TOPMOST؛
+    عرف _دقة_المؤقت_: لقب Hints.TIMER_RESOLUTION؛
+  };
   
   عرف عـصا_التحكم: لقب Joystick؛
   @دمج صنف Joystick
@@ -14,6 +45,55 @@
     عرف هات_عدد_المحاور: لقب getAxesCount؛
     عرف هات_محور: لقب getAxis؛
     عرف حدث: لقب update؛
+  }؛
+  
+  عرف نـافذة: لقب Window؛
+  @دمج صنف Window
+  {
+    عرف أنشئ: لقب create؛
+  }؛
+  
+  عرف رسـام: لقب Renderer؛
+  @دمج صنف Renderer
+  {
+    عرف أنشئ: لقب create؛
+    عرف عين_لون_الرسم: لقب setDrawColor؛
+    عرف نظف: لقب clear؛
+    عرف اعرض: لقب present؛
+    عرف انسخ: لقب copy؛
+    
+    عرف عـلامات: {
+      عرف _برمجي_: لقب Flags.SOFTWARE؛
+      عرف _مسرع_: لقب Flags.ACCELERATED؛
+    }؛
+  }؛
+    
+  عرف نـقش: لقب Texture؛
+  @دمج صنف Texture
+  {
+    عرف استفهم: لقب query؛
+  }؛
+  
+  عرف مـستطيل: لقب Rect؛
+  @دمج صنف Rect
+  {
+    عرف س: لقب x؛
+    عرف ص: لقب y؛
+    عرف ع: لقب w؛
+    عرف ط: لقب h؛
+  }؛
+  
+  عرف صـورة: لقب Img؛
+  @دمج وحدة Img
+  {
+    عرف _تهيئة_جبج_: لقب INIT_JPG;
+    عرف _تهيئة_بنج_: لقب INIT_PNG;
+    عرف _تهيئة_تيف_: لقب INIT_TIF؛
+    عرف _تهيئة_ويبب_: لقب INIT_WEBP؛
+    
+    عرف هيئ: لقب init؛
+    
+    عرف حمل_نقش: لقب loadTexture؛
   }؛
 }؛
 

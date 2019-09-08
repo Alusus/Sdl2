@@ -1,10 +1,51 @@
 import "globals.alusus";
 import "libSDL2-2.0.so.0";
+import "libSDL2_image-2.0.so.0";
 
 module Sdl
 {
-  def SDL_INIT_JOYSTICK: 0x00000200;
-  @expname[SDL_Init] function init (flags: Word)=>Int;
+  def INIT_AUDIO: 0x00000010;
+  def INIT_VIDEO: 0x00000020;
+  def INIT_JOYSTICK: 0x00000200;
+
+  @expname[SDL_Init]
+  function init (flags: Word)=>Int;
+
+  @expname[SDL_SetHint]
+  function setHint (name: ptr[Char], value: ptr[Char]) => Bool;
+
+  @expname[SDL_PollEvent]
+  function pollEvent (event: ptr[Event]) => Int;
+
+  type Event
+  {
+    def eventType: Word;
+    def padding: array[Word, 52];
+
+    def QUIT: 0x100u;
+  };
+
+  def Hints: {
+    def FRAMEBUFFER_ACCELERATION: "SDL_FRAMEBUFFER_ACCELERATION";
+    def RENDER_DRIVER: "SDL_RENDER_DRIVER";
+    def RENDER_OPENGL_SHADERS: "SDL_RENDER_OPENGL_SHADERS";
+    def RENDER_DIRECT3D_THREADSAFE: "SDL_RENDER_DIRECT3D_THREADSAFE";
+    def RENDER_SCALE_QUALITY: "SDL_RENDER_SCALE_QUALITY";
+    def RENDER_VSYNC: "SDL_RENDER_VSYNC";
+    def VIDEO_X11_XVIDMODE: "SDL_VIDEO_X11_XVIDMODE";
+    def VIDEO_X11_XINERAMA: "SDL_VIDEO_X11_XINERAMA";
+    def VIDEO_X11_XRANDR: "SDL_VIDEO_X11_XRANDR";
+    def GRAB_KEYBOARD: "SDL_GRAB_KEYBOARD";
+    def VIDEO_MINIMIZE_ON_FOCUS_LOSS: "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS";
+    def IDLE_TIMER_DISABLED: "SDL_IOS_IDLE_TIMER_DISABLED";
+    def ORIENTATIONS: "SDL_IOS_ORIENTATIONS";
+    def XINPUT_ENABLED: "SDL_XINPUT_ENABLED";
+    def GAMECONTROLLERCONFIG: "SDL_GAMECONTROLLERCONFIG";
+    def JOYSTICK_ALLOW_BACKGROUND_EVENTS: "SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS";
+    def ALLOW_TOPMOST: "SDL_ALLOW_TOPMOST";
+    def TIMER_RESOLUTION: "SDL_TIMER_RESOLUTION";
+    def VIDEO_HIGHDPI_DISABLED: "SDL_VIDEO_HIGHDPI_DISABLED";
+  };
 
   type Joystick
   {
@@ -14,5 +55,61 @@ module Sdl
     @shared @expname[SDL_JoystickGetAxis] function getAxis (joy: ptr[Joystick], axis: Int) => Int[16];
     @shared @expname[SDL_JoystickUpdate] function update;
   };
-};
 
+  type Window
+  {
+    @shared @expname[SDL_CreateWindow]
+    function create (title: ptr[Char], x: Int, y: Int, w: Int, h: Int, flags: Word) => ptr[Window];
+  };
+
+  type Renderer
+  {
+    @shared @expname[SDL_CreateRenderer]
+    function create (window: ptr[Window], index: Int, flags: Word) => ptr[Renderer];
+
+    @shared @expname[SDL_SetRenderDrawColor]
+    function setDrawColor (renderer: ptr[Renderer], r: Word[8], g: Word[8], b: Word[8], a: Word[8]) => Int;
+
+    @shared @expname[SDL_RenderClear]
+    function clear (renderer: ptr[Renderer]) => Int;
+
+    @shared @expname[SDL_RenderPresent]
+    function present (renderer: ptr[Renderer]);
+
+    @shared @expname[SDL_RenderCopy]
+    function copy (renderer: ptr[Renderer], texture: ptr[Texture], srcRect: ptr[Rect], destRect: ptr[Rect]) => Int;
+
+    def Flags: {
+      def SOFTWARE: 0x00000001;
+      def ACCELERATED: 0x00000002;
+    };
+  };
+
+  type Texture
+  {
+    @shared @expname[SDL_QueryTexture]
+    function query (texture: ptr[Texture], format: ptr[Word], access: ptr[Int], w: ptr[Int], h: ptr[Int]) => Int;
+  };
+
+  type Rect
+  {
+    def x: Int;
+    def y: Int;
+    def w: Int;
+    def h: Int;
+  };
+
+  module Img
+  {
+    def INIT_JPG: 0x00000001;
+    def INIT_PNG: 0x00000002;
+    def INIT_TIF: 0x00000004;
+    def INIT_WEBP: 0x00000008;
+
+    @expname[IMG_Init]
+    function init (flags: Int) => Int;
+
+    @expname[IMG_LoadTexture]
+    function loadTexture(renderer: ptr[Renderer], file: ptr[Char]) => ptr[Texture];
+  };
+};

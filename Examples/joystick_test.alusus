@@ -3,7 +3,7 @@ import "Srl/System.alusus";
 import "Srl/Fs.alusus";
 import "../Sdl.alusus";
 
-if Sdl.init(Sdl.SDL_INIT_JOYSTICK) == 0 {
+if Sdl.init(Sdl.INIT_JOYSTICK) == 0 {
   Srl.Console.print("Initialized SDL successfully.\n");
   if Sdl.Joystick.getCount() > 0 {
     def joy: ptr[Sdl.Joystick];
