@@ -53,6 +53,7 @@ module Sdl
     @shared @expname[SDL_JoystickOpen] function open (index: Int)=>ptr[Joystick];
     @shared @expname[SDL_JoystickNumAxes] function getAxesCount (joy: ptr[Joystick]) => Int;
     @shared @expname[SDL_JoystickGetAxis] function getAxis (joy: ptr[Joystick], axis: Int) => Int[16];
+    @shared @expname[SDL_JoystickGetButton] function getButton (joy: ptr[Joystick], button: Int) => Word[8];
     @shared @expname[SDL_JoystickUpdate] function update;
   };
 
