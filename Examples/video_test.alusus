@@ -1,7 +1,8 @@
 import "Srl/Console.alusus";
 import "Srl/System.alusus";
 import "Srl/Fs.alusus";
-import "../Sdl.alusus";
+import "Apm.alusus";
+Apm.importFile("Alusus/Sdl2", "Sdl.alusus");
 
 @expname[exit] function exit (status: Int);
 
