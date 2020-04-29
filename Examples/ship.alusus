@@ -1,0 +1,168 @@
+import "Srl/Console.alusus";
+import "Srl/System.alusus";
+import "Srl/Fs.alusus";
+import "Apm.alusus";
+Apm.importFile("Alusus/Sdl2", "Sdl.alusus");
+
+@expname[exit] function exit (status: Int);
+
+def renderer: ptr[Sdl.Renderer];
+
+function init {
+  if Sdl.init(Sdl.INIT_VIDEO | Sdl.INIT_AUDIO) != 0 {
+    Srl.Console.print("SDL initialization failed.\n");
+    exit(1);
+  };
+
+  if Sdl.Img.init(Sdl.Img.INIT_PNG) != Sdl.Img.INIT_PNG {
+    Srl.Console.print("SDL IMG initialization failed.\n");
+    exit(1);
+  };
+
+  if Sdl.Audio.init(44100, Sdl.Audio.Format.DEFAULT, 2, 2048) < 0 {
+    Srl.Console.print("SDL audio initialization failed.\n");
+    exit(1);
+  }
+
+  Sdl.Text.init();
+
+  def window: ptr[Sdl.Window] = Sdl.Window.create("Shooter 01", 0, 0, 1280, 720, 0);
+  if window == 0 {
+    Srl.Console.print("SDL window creation failed.\n");
+    exit(1);
+  };
+
+  Sdl.setHint(Sdl.Hints.RENDER_SCALE_QUALITY, "linear");
+
+  renderer = Sdl.Renderer.create(window, -1, Sdl.Renderer.Flags.ACCELERATED);
+  if renderer == 0 {
+    Srl.Console.print("SDL renderer creation failed.\n");
+    exit(1);
+  };
+}
+
+def texture: ptr[Sdl.Texture];
+def bigFont: ptr[Sdl.Text.Font];
+def smallFont: ptr[Sdl.Text.Font];
+def arTitleTexture: ptr[Sdl.Texture];
+def arDescTexture: ptr[Sdl.Texture];
+def enTitleTexture: ptr[Sdl.Texture];
+def enDescTexture: ptr[Sdl.Texture];
+def arTitleRect: Sdl.Rect;
+def arDescRect: Sdl.Rect;
+def enTitleRect: Sdl.Rect;
+def music: ptr[Sdl.Audio.Music];
+def sound: ptr[Sdl.Audio.Sound];
+
+function prepareResources {
+  texture = Sdl.Img.loadTexture(renderer, "player.png");
+
+  // Prepare text
+  bigFont = Sdl.Text.openFont("AlususMono.otf", 40);
+  if bigFont == 0 {
+    Srl.Console.print("Failed to load font.\n");
+    exit(1);
+  }
+  smallFont = Sdl.Text.openFont("AlususMono.otf", 20);
+  if smallFont == 0 {
+    Srl.Console.print("Failed to load font.\n");
+    exit(1);
+  }
+
+  def textColor: Sdl.Color;
+
+  textColor.r = 0; textColor.g = 255; textColor.b = 0; textColor.a = 255;
+  arTitleTexture = Sdl.Text.renderText("اخْتِـبـارُ الرُسـوم", textColor~ptr, bigFont, 1, renderer);
+  textColor.r = 0; textColor.g = 0; textColor.b = 0; textColor.a = 255;
+  arDescTexture = Sdl.Text.renderText(
+    "اضْغَط مِفْتاحَ المَسافَةِ لِلمُؤَثِّراتِ الصَوْتِيّة", textColor~ptr, smallFont, 1, renderer
+  );
+
+  textColor.r = 0; textColor.g = 0; textColor.b = 255; textColor.a = 255;
+  enTitleTexture = Sdl.Text.renderText("Video Test", textColor~ptr, bigFont, 0, renderer);
+  textColor.r = 0; textColor.g = 0; textColor.b = 0; textColor.a = 255;
+  enDescTexture = Sdl.Text.renderText(
+    "Press Space for sound effects", textColor~ptr, smallFont, 0, renderer
+  );
+
+  Sdl.Texture.query(arTitleTexture, 0, 0, arTitleRect.w~ptr, arTitleRect.h~ptr);
+  Sdl.Texture.query(arDescTexture, 0, 0, arDescRect.w~ptr, arDescRect.h~ptr);
+  Sdl.Texture.query(enTitleTexture, 0, 0, enTitleRect.w~ptr, enTitleRect.h~ptr);
+
+  music = Sdl.Audio.loadMusic("BoxCat_Games_-_07_-_Inspiration.mp3");
+  if music == 0 {
+    Srl.Console.print("Failed to load music.\n");
+    exit(1);
+  }
+
+  sound = Sdl.Audio.loadWav("bullet_whizzing_by-Mike_Koenig.wav");
+  if sound == 0 {
+    Srl.Console.print("Failed to load sound effect.\n");
+    exit(1);
+  }
+}
+
+function blit (texture: ptr[Sdl.Texture], x: Int, y: Int)
+{
+  def dest: Sdl.Rect;
+
+	dest.x = x;
+	dest.y = y;
+	Sdl.Texture.query(texture, 0, 0, dest.w~ptr, dest.h~ptr);
+	Sdl.Renderer.copy(renderer, texture, 0, dest~ptr);
+};
+
+function main {
+  init();
+  prepareResources();
+
+  Sdl.Audio.play(music, 1);
+
+  def x: array[Int, 100];
+  def y: array[Int, 100];
+  x(0) = 0;
+  y(0) = 100;
+  def i: Int;
+
+  while 1 {
+    Sdl.Renderer.setDrawColor(renderer, 96, 128, 255, 255);
+    Sdl.Renderer.clear(renderer);
+
+    for i = 99, i > 0, --i {
+      x(i) = x(i - 1);
+      y(i) = y(i - 1);
+    }
+
+    for i = 9, i >= 0, --i {
+      blit(texture, x(i * 10), y(i * 10));
+    }
+
+    blit(arTitleTexture, 1280 - arTitleRect.w, 0);
+    blit(arDescTexture, 1280 - arDescRect.w, arTitleRect.h);
+    blit(enTitleTexture, 0, 0);
+    blit(enDescTexture, 0, enTitleRect.h);
+
+    def event: Sdl.Event;
+    while Sdl.pollEvent(event~ptr) != 0 {
+      if event.eventType == Sdl.Event.KEY_DOWN {
+        if event~ptr~cast[ptr[Sdl.KeyboardEvent]]~cnt.scanCode == Sdl.Keyboard.ScanCode.ESCAPE exit(0);
+        if event~ptr~cast[ptr[Sdl.KeyboardEvent]]~cnt.scanCode == Sdl.Keyboard.ScanCode.SPACE {
+          Sdl.Audio.play(-1, sound, 0, -1);
+        }
+      }
+      if event.eventType == Sdl.Event.QUIT exit(0);
+    };
+
+    def keyStates: ptr[array[Word[8]]] = Sdl.Keyboard.getState(0);
+    if keyStates~cnt(Sdl.Keyboard.ScanCode.RIGHT) != 0 { ++x(0) };
+    if keyStates~cnt(Sdl.Keyboard.ScanCode.LEFT) != 0 { --x(0) };
+    if keyStates~cnt(Sdl.Keyboard.ScanCode.DOWN) != 0 { ++y(0) };
+    if keyStates~cnt(Sdl.Keyboard.ScanCode.UP) != 0 { --y(0) };
+
+    Sdl.Renderer.present(renderer);
+
+    Srl.System.sleep(1000);
+  };
+};
+
+main();

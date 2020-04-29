@@ -10,14 +10,32 @@
   عرف هيئ: لقب init؛
   عرف عين_تلميح: لقب setHint؛
   عرف استشعر_حدث: لقب pollEvent؛
-  
+  عرف ضخ_أحداث: لقب pumpEvents؛
+  عرف أتلف_نقش: لقب destroyTexture؛
+  عرف حرر_سطح: لقب freeSurface؛
+
   عرف حـدث: لقب Event؛
   @دمج عرف Event:
   {
     عرف نوع: لقب eventType؛
     عرف حشوة: لقب padding؛
-    
+
     عرف _خروج_: 0h100u؛
+    عرف _زر_للأسفل_: 0h300u؛
+    عرف _زر_للأعلى_: 0h301u؛
+  }؛
+
+  عرف حـدث_مفاتيح: لقب KeyboardEvent؛
+  @دمج عرف KeyboardEvent:
+  {
+    عرف نوع: لقب eventType؛
+    عرف وقت: لقب timestamp؛
+    عرف معرف_النافذة: لقب windowId؛
+    عرف الحالة: لقب state؛
+    عرف تكرار: لقب repeat؛
+    عرف كود_المسح: لقب scanCode؛
+    عرف كود_المفتاح: لقب keyCode؛
+    عرف تعديل: لقب mod؛
   }؛
 
   عرف تـلميحات: {
@@ -36,7 +54,7 @@
     عرف _تمكين_الأعلى_: لقب Hints.ALLOW_TOPMOST؛
     عرف _دقة_المؤقت_: لقب Hints.TIMER_RESOLUTION؛
   };
-  
+
   عرف عـصا_التحكم: لقب Joystick؛
   @دمج صنف Joystick
   {
@@ -47,13 +65,21 @@
     عرف هات_زر: لقب getButton؛
     عرف حدث: لقب update؛
   }؛
-  
+
+  عرف لـوح_المفاتيح: لقب Keyboard؛
+  @دمج وحدة Keyboard
+  {
+    عرف كـود_المسح: لقب ScanCode؛
+    عرف حول_كود_مسح_إلى_كود_مفتاح: لقب scanCodeToKeyCode؛
+    عرف هات_الحالة: لقب getState؛
+  }؛
+
   عرف نـافذة: لقب Window؛
   @دمج صنف Window
   {
     عرف أنشئ: لقب create؛
   }؛
-  
+
   عرف رسـام: لقب Renderer؛
   @دمج صنف Renderer
   {
@@ -62,19 +88,22 @@
     عرف نظف: لقب clear؛
     عرف اعرض: لقب present؛
     عرف انسخ: لقب copy؛
-    
+    عرف أنشئ_نقش_من_سطح: لقب createTextureFromSurface؛
+
     عرف عـلامات: {
       عرف _برمجي_: لقب Flags.SOFTWARE؛
       عرف _مسرع_: لقب Flags.ACCELERATED؛
     }؛
   }؛
-    
+
   عرف نـقش: لقب Texture؛
   @دمج صنف Texture
   {
     عرف استفهم: لقب query؛
   }؛
-  
+
+  عرف سـطح: لقب Surface؛
+
   عرف مـستطيل: لقب Rect؛
   @دمج صنف Rect
   {
@@ -83,7 +112,16 @@
     عرف ع: لقب w؛
     عرف ط: لقب h؛
   }؛
-  
+
+  عرف لـون: لقب Color؛
+  @دمج صنف Color
+  {
+    عرف ح: لقب r؛
+    عرف خ: لقب g؛
+    عرف ز: لقب b؛
+    عرف ش: لقب a؛
+  }؛
+
   عرف صـورة: لقب Img؛
   @دمج وحدة Img
   {
@@ -91,10 +129,52 @@
     عرف _تهيئة_بنج_: لقب INIT_PNG;
     عرف _تهيئة_تيف_: لقب INIT_TIF؛
     عرف _تهيئة_ويبب_: لقب INIT_WEBP؛
-    
+
     عرف هيئ: لقب init؛
-    
+
     عرف حمل_نقش: لقب loadTexture؛
+  }؛
+
+  عرف سـمعي: لقب Audio؛
+  @دمج وحدة Audio
+  {
+    عرف صـوت: لقب Sound؛
+    عرف مـوسيقى: لقب Music؛
+
+    عرف بـنية: {
+      عرف _ط8_: لقب Format.U8؛
+      عرف _ص8_: لقب Format.S8؛
+      عرف _ط16أدنى_: لقب Format.U16LSB؛
+      عرف _ص16أدنى_: لقب Format.S16LSB؛
+      عرف _ط16أعلى_: لقب Format.U16MSB؛
+      عرف _ص16أعلى_: لقب Format.S16MSB؛
+      عرف _ط16_: لقب Format.U16؛
+      عرف _ص16_: لقب Format.S16؛
+      عرف _ط16نظام_: لقب Format.U16SYS؛
+      عرف _ص16نظام_: لقب Format.S16SYS؛
+      عرف _مبدئي_: لقب Format.DEFAULT؛
+    }؛
+
+    عرف هيئ: لقب init؛
+    عرف حمل_صوت: لقب loadWav؛
+    عرف حمل_موسيقى: لقب loadMusic؛
+    عرف حرر: لقب free؛
+    عرف شغل: لقب play؛
+    عرف هل_الموسيقى_مشتغلة: لقب isMusicPlaying؛
+    عرف هل_الموسيقى_ملبثة: لقب isMusicPaused؛
+    عرف ألبث_الموسيقى: لقب pauseMusic؛
+    عرف استئنف_الموسيقى: لقب resumeMusic؛
+    عرف لاشي_الموسيقى: لقب fadeMusicOut؛
+  }؛
+
+  عرف كـتابة: لقب Text؛
+  @دمج وحدة Text {
+    عرف خـط: لقب Font؛
+    عرف هيئ: لقب init؛
+    عرف اعتق: لقب destroy؛
+    عرف افتح_خط: لقب openFont؛
+    عرف حرر_خط: لقب releaseFont؛
+    عرف اكتب: لقب renderText؛
   }؛
 }؛
 

@@ -1,6 +1,8 @@
 import "globals.alusus";
 import "libSDL2-2.0.so.0";
 import "libSDL2_image-2.0.so.0";
+import "libSDL2_mixer-2.0.so.0";
+import "libsdl_harfbuzz_ext.so";
 
 module Sdl
 {
@@ -17,12 +19,38 @@ module Sdl
   @expname[SDL_PollEvent]
   function pollEvent (event: ptr[Event]) => Int;
 
+  @expname[SDL_PumpEvents]
+  function pumpEvents;
+
+  @expname[SDL_RWFromFile]
+  func rwFromFile (filename: ptr[array[Char]], mode: ptr[array[Char]]): ptr;
+
+  @expname[SDL_DestroyTexture]
+  func destroyTexture (ptr[Texture]);
+
+  @expname[SDL_FreeSurface]
+  func freeSurface (ptr[Surface]);
+
   type Event
   {
     def eventType: Word;
     def padding: array[Word, 52];
 
     def QUIT: 0x100u;
+    def KEY_DOWN: 0x300u;
+    def KEY_UP: 0x301u;
+  };
+
+  type KeyboardEvent
+  {
+    def eventType: Word;
+    def timestamp: Word;
+    def windowId: Word;
+    def state: Word[8];
+    def repeat: Word[8];
+    def scanCode: Int;
+    def keyCode: Int;
+    def mod: Word[16];
   };
 
   def Hints: {
@@ -57,6 +85,259 @@ module Sdl
     @shared @expname[SDL_JoystickUpdate] function update;
   };
 
+  module Keyboard
+  {
+    def ScanCode: {
+      def A: 4;
+      def B: 5;
+      def C: 6;
+      def D: 7;
+      def E: 8;
+      def F: 9;
+      def G: 10;
+      def H: 11;
+      def I: 12;
+      def J: 13;
+      def K: 14;
+      def L: 15;
+      def M: 16;
+      def N: 17;
+      def O: 18;
+      def P: 19;
+      def Q: 20;
+      def R: 21;
+      def S: 22;
+      def T: 23;
+      def U: 24;
+      def V: 25;
+      def W: 26;
+      def X: 27;
+      def Y: 28;
+      def Z: 29;
+      def NUM_1: 30;
+      def NUM_2: 31;
+      def NUM_3: 32;
+      def NUM_4: 33;
+      def NUM_5: 34;
+      def NUM_6: 35;
+      def NUM_7: 36;
+      def NUM_8: 37;
+      def NUM_9: 38;
+      def NUM_0: 39;
+      def RETURN: 40;
+      def ESCAPE: 41;
+      def BACKSPACE: 42;
+      def TAB: 43;
+      def SPACE: 44;
+      def MINUS: 45;
+      def EQUALS: 46;
+      def LEFTBRACKET: 47;
+      def RIGHTBRACKET: 48;
+      def BACKSLASH: 49;
+      def NONUSHASH: 50;
+      def SEMICOLON: 51;
+      def APOSTROPHE: 52;
+      def GRAVE: 53;
+      def COMMA: 54;
+      def PERIOD: 55;
+      def SLASH: 56;
+      def CAPSLOCK: 57;
+      def F1: 58;
+      def F2: 59;
+      def F3: 60;
+      def F4: 61;
+      def F5: 62;
+      def F6: 63;
+      def F7: 64;
+      def F8: 65;
+      def F9: 66;
+      def F10: 67;
+      def F11: 68;
+      def F12: 69;
+      def PRINTSCREEN: 70;
+      def SCROLLLOCK: 71;
+      def PAUSE: 72;
+      def INSERT: 73;
+      def HOME: 74;
+      def PAGEUP: 75;
+      def DELETE: 76;
+      def END: 77;
+      def PAGEDOWN: 78;
+      def RIGHT: 79;
+      def LEFT: 80;
+      def DOWN: 81;
+      def UP: 82;
+      def NUMLOCKCLEAR: 83;
+      def KP_DIVIDE: 84;
+      def KP_MULTIPLY: 85;
+      def KP_MINUS: 86;
+      def KP_PLUS: 87;
+      def KP_ENTER: 88;
+      def KP_1: 89;
+      def KP_2: 90;
+      def KP_3: 91;
+      def KP_4: 92;
+      def KP_5: 93;
+      def KP_6: 94;
+      def KP_7: 95;
+      def KP_8: 96;
+      def KP_9: 97;
+      def KP_0: 98;
+      def KP_PERIOD: 99;
+      def NONUSBACKSLASH: 100;
+      def APPLICATION: 101;
+      def POWER: 102;
+      def KP_EQUALS: 103;
+      def F13: 104;
+      def F14: 105;
+      def F15: 106;
+      def F16: 107;
+      def F17: 108;
+      def F18: 109;
+      def F19: 110;
+      def F20: 111;
+      def F21: 112;
+      def F22: 113;
+      def F23: 114;
+      def F24: 115;
+      def EXECUTE: 116;
+      def HELP: 117;
+      def MENU: 118;
+      def SELECT: 119;
+      def STOP: 120;
+      def AGAIN: 121;
+      def UNDO: 122;
+      def CUT: 123;
+      def COPY: 124;
+      def PASTE: 125;
+      def FIND: 126;
+      def MUTE: 127;
+      def VOLUMEUP: 128;
+      def VOLUMEDOWN: 129;
+      def KP_COMMA: 133;
+      def KP_EQUALSAS400: 134;
+      def INTERNATIONAL1: 135;
+      def INTERNATIONAL2: 136;
+      def INTERNATIONAL3: 137;
+      def INTERNATIONAL4: 138;
+      def INTERNATIONAL5: 139;
+      def INTERNATIONAL6: 140;
+      def INTERNATIONAL7: 141;
+      def INTERNATIONAL8: 142;
+      def INTERNATIONAL9: 143;
+      def LANG1: 144;
+      def LANG2: 145;
+      def LANG3: 146;
+      def LANG4: 147;
+      def LANG5: 148;
+      def LANG6: 149;
+      def LANG7: 150;
+      def LANG8: 151;
+      def LANG9: 152;
+      def ALTERASE: 153;
+      def SYSREQ: 154;
+      def CANCEL: 155;
+      def CLEAR: 156;
+      def PRIOR: 157;
+      def RETURN2: 158;
+      def SEPARATOR: 159;
+      def OUT: 160;
+      def OPER: 161;
+      def CLEARAGAIN: 162;
+      def CRSEL: 163;
+      def EXSEL: 164;
+      def KP_00: 176;
+      def KP_000: 177;
+      def THOUSANDSSEPARATOR: 178;
+      def DECIMALSEPARATOR: 179;
+      def CURRENCYUNIT: 180;
+      def CURRENCYSUBUNIT: 181;
+      def KP_LEFTPAREN: 182;
+      def KP_RIGHTPAREN: 183;
+      def KP_LEFTBRACE: 184;
+      def KP_RIGHTBRACE: 185;
+      def KP_TAB: 186;
+      def KP_BACKSPACE: 187;
+      def KP_A: 188;
+      def KP_B: 189;
+      def KP_C: 190;
+      def KP_D: 191;
+      def KP_E: 192;
+      def KP_F: 193;
+      def KP_XOR: 194;
+      def KP_POWER: 195;
+      def KP_PERCENT: 196;
+      def KP_LESS: 197;
+      def KP_GREATER: 198;
+      def KP_AMPERSAND: 199;
+      def KP_DBLAMPERSAND: 200;
+      def KP_VERTICALBAR: 201;
+      def KP_DBLVERTICALBAR: 202;
+      def KP_COLON: 203;
+      def KP_HASH: 204;
+      def KP_SPACE: 205;
+      def KP_AT: 206;
+      def KP_EXCLAM: 207;
+      def KP_MEMSTORE: 208;
+      def KP_MEMRECALL: 209;
+      def KP_MEMCLEAR: 210;
+      def KP_MEMADD: 211;
+      def KP_MEMSUBTRACT: 212;
+      def KP_MEMMULTIPLY: 213;
+      def KP_MEMDIVIDE: 214;
+      def KP_PLUSMINUS: 215;
+      def KP_CLEAR: 216;
+      def KP_CLEARENTRY: 217;
+      def KP_BINARY: 218;
+      def KP_OCTAL: 219;
+      def KP_DECIMAL: 220;
+      def KP_HEXADECIMAL: 221;
+      def LCTRL: 224;
+      def LSHIFT: 225;
+      def LALT: 226;
+      def LGUI: 227;
+      def RCTRL: 228;
+      def RSHIFT: 229;
+      def RALT: 230;
+      def RGUI: 231;
+      def MODE: 257;
+      def AUDIONEXT: 258;
+      def AUDIOPREV: 259;
+      def AUDIOSTOP: 260;
+      def AUDIOPLAY: 261;
+      def AUDIOMUTE: 262;
+      def MEDIASELECT: 263;
+      def WWW: 264;
+      def MAIL: 265;
+      def CALCULATOR: 266;
+      def COMPUTER: 267;
+      def AC_SEARCH: 268;
+      def AC_HOME: 269;
+      def AC_BACK: 270;
+      def AC_FORWARD: 271;
+      def AC_STOP: 272;
+      def AC_REFRESH: 273;
+      def AC_BOOKMARKS: 274;
+      def BRIGHTNESSDOWN: 275;
+      def BRIGHTNESSUP: 276;
+      def DISPLAYSWITCH: 277;
+      def KBDILLUMTOGGLE: 278;
+      def KBDILLUMDOWN: 279;
+      def KBDILLUMUP: 280;
+      def EJECT: 281;
+      def SLEEP: 282;
+      def APP1: 283;
+      def APP2: 284;
+      def AUDIOREWIND: 285;
+      def AUDIOFASTFORWARD: 286;
+    };
+
+    macro scanCodeToKeyCode [X]  (X | (1<<30))
+
+    @expname[SDL_GetKeyboardState]
+    function getState (numkeys: ptr[Int]): ptr[array[Word[8]]];
+  };
+
   type Window
   {
     @shared @expname[SDL_CreateWindow]
@@ -80,6 +361,9 @@ module Sdl
     @shared @expname[SDL_RenderCopy]
     function copy (renderer: ptr[Renderer], texture: ptr[Texture], srcRect: ptr[Rect], destRect: ptr[Rect]) => Int;
 
+    @shared @expname[SDL_CreateTextureFromSurface]
+    func createTextureFromSurface (renderer: ptr[Renderer], surface: ptr[Surface]): ptr[Texture];
+
     def Flags: {
       def SOFTWARE: 0x00000001;
       def ACCELERATED: 0x00000002;
@@ -92,12 +376,24 @@ module Sdl
     function query (texture: ptr[Texture], format: ptr[Word], access: ptr[Int], w: ptr[Int], h: ptr[Int]) => Int;
   };
 
+  type Surface
+  {
+  }
+
   type Rect
   {
     def x: Int;
     def y: Int;
     def w: Int;
     def h: Int;
+  };
+
+  type Color
+  {
+    def r: Word[8];
+    def g: Word[8];
+    def b: Word[8];
+    def a: Word[8];
   };
 
   module Img
@@ -112,5 +408,95 @@ module Sdl
 
     @expname[IMG_LoadTexture]
     function loadTexture(renderer: ptr[Renderer], file: ptr[Char]) => ptr[Texture];
+  };
+
+  module Audio
+  {
+    type Sound
+    {
+    }
+
+    type Music
+    {
+    }
+
+    def Format: {
+      def U8: 0x0008;
+      def S8: 0x8008;
+      def U16LSB: 0x0010;
+      def S16LSB: 0x8010;
+      def U16MSB: 0x1010;
+      def S16MSB: 0x9010;
+      def U16: alias U16LSB;
+      def S16: alias S16LSB;
+      def U16SYS: alias U16LSB;
+      def S16SYS: alias S16LSB;
+      def DEFAULT: alias S16SYS;
+    };
+
+    @expname[Mix_OpenAudio]
+    function init (frequency: Int, format: Word[16], channels: Int, chunksize: Int): Int;
+
+    function loadWav (filename: ptr[array[Char]]): ptr[Sound]
+    {
+      return _loadWavRw(rwFromFile(filename, "rb"), 1)      ;
+    }
+
+    @expname[Mix_LoadWAV_RW]
+    function _loadWavRw (ptr, freesrc: Int): ptr[Sound];
+
+    @expname[Mix_LoadMUS]
+    function loadMusic (filename: ptr[array[Char]]): ptr[Music];
+
+    @expname[Mix_FreeChunk]
+    function free (ptr[Sound]);
+
+    @expname[Mix_FreeMusic]
+    function free (ptr[Music]);
+
+    @expname[Mix_PlayChannelTimed]
+    function play (channel: Int, sound: ptr[Sound], loops: Int, ticks: Int): Int;
+
+    @expname[Mix_PlayMusic]
+    function play (music: ptr[Music], loops: Int): Int;
+
+    @expname[Mix_PlayingMusic]
+    function isMusicPlaying(): Int;
+
+    @expname[Mix_PausedMusic]
+    function isMusicPaused (): Int;
+
+    @expname[Mix_PauseMusic]
+    function pauseMusic;
+
+    @expname[Mix_ResumeMusic]
+    function resumeMusic;
+
+    @expname[Mix_FadeOutMusic]
+    function fadeMusicOut (milliseconds: Int): Int;
+  };
+
+  module Text
+  {
+    type Font
+    {
+    }
+
+    @expname[sdlhbext_init]
+    func init;
+
+    @expname[sdlhbext_destroy]
+    func destroy;
+
+    @expname[sdlhbext_openFont]
+    func openFont (filename: ptr[array[Char]], ptSize: Int): ptr[Font];
+
+    @expname[sdlhbext_releaseFont]
+    func releaseFont (ptr[Font]);
+
+    @expname[sdlhbext_createTexture]
+    func renderText (
+      text: ptr[array[Char]], color: ptr[Color], font: ptr[Font], arabic: Int, renderer: ptr[Renderer]
+    ): ptr[Texture];
   };
 };
