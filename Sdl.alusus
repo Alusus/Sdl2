@@ -39,6 +39,7 @@ module Sdl
     def QUIT: 0x100u;
     def KEY_DOWN: 0x300u;
     def KEY_UP: 0x301u;
+    def TEXTINPUT: 0x303u;
   };
 
   type KeyboardEvent
@@ -51,6 +52,14 @@ module Sdl
     def scanCode: Int;
     def keyCode: Int;
     def mod: Word[16];
+  };
+
+  type TextInputEvent
+  {
+    def eventType: Word;
+    def timestamp: Word;
+    def windowId: Word;
+    def text: array[Char, 32];
   };
 
   def Hints: {
