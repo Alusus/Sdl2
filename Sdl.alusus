@@ -383,6 +383,9 @@ module Sdl
   {
     @shared @expname[SDL_QueryTexture]
     function query (texture: ptr[Texture], format: ptr[Word], access: ptr[Int], w: ptr[Int], h: ptr[Int]) => Int;
+
+    @shared @expname[SDL_SetTextureAlphaMod]
+    function setAlphaMod (texture: ptr[Texture], alpha: Word[8]) => Int;
   };
 
   type Surface
