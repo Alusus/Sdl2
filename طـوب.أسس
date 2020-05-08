@@ -194,11 +194,12 @@
     عرف حمل_موسيقى: لقب loadMusic؛
     عرف حرر: لقب free؛
     عرف شغل: لقب play؛
+    عرف لاش_قناة: لقب fadeChannelOut؛
     عرف هل_الموسيقى_مشتغلة: لقب isMusicPlaying؛
     عرف هل_الموسيقى_ملبثة: لقب isMusicPaused؛
     عرف ألبث_الموسيقى: لقب pauseMusic؛
     عرف استئنف_الموسيقى: لقب resumeMusic؛
-    عرف لاشي_الموسيقى: لقب fadeMusicOut؛
+    عرف لاش_الموسيقى: لقب fadeMusicOut؛
   }؛
 
   عرف كـتابة: لقب Text؛
