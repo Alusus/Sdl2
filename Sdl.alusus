@@ -373,6 +373,18 @@ module Sdl
     @shared @expname[SDL_CreateTextureFromSurface]
     func createTextureFromSurface (renderer: ptr[Renderer], surface: ptr[Surface]): ptr[Texture];
 
+    @shared @expname[SDL_SetRenderTarget]
+    func setRenderTarget (renderer: ptr[Renderer], texture: ptr[Texture]): Int;
+
+    @shared @expname[SDL_RenderDrawRect]
+    func drawRect (renderer: ptr[Renderer], rect: ptr[Rect]): Int;
+
+    @shared @expname[SDL_RenderFillRect]
+    func fillRect (renderer: ptr[Renderer], rect: ptr[Rect]): Int;
+
+    @shared @expname[SDL_SetRenderDrawBlendMode]
+    function setBlendMode(renderer: ptr[Renderer], mode: Int): Int;
+
     def Flags: {
       def SOFTWARE: 0x00000001;
       def ACCELERATED: 0x00000002;
@@ -381,11 +393,23 @@ module Sdl
 
   type Texture
   {
+    @shared @expname[SDL_CreateTexture]
+    func new (renderer: ptr[Renderer], format: Word, access: Int, w: Int, h: Int): ptr[Texture];
+
     @shared @expname[SDL_QueryTexture]
     function query (texture: ptr[Texture], format: ptr[Word], access: ptr[Int], w: ptr[Int], h: ptr[Int]) => Int;
 
     @shared @expname[SDL_SetTextureAlphaMod]
     function setAlphaMod (texture: ptr[Texture], alpha: Word[8]) => Int;
+
+    @shared @expname[SDL_SetTextureBlendMode]
+    function setBlendMode(texture: ptr[Texture], mode: Int): Int;
+
+    def Access: {
+      def STATIC: 0;
+      def STREAMING: 1;
+      def TARGET: 2;
+    }
   };
 
   type Surface
@@ -406,6 +430,17 @@ module Sdl
     def g: Word[8];
     def b: Word[8];
     def a: Word[8];
+  };
+
+  def Format: {
+    def RGBA8888: 0x16462004;
+  };
+
+  def BlendMode: {
+    def NONE: 0;
+    def BLEND: 1;
+    def ADD: 2;
+    def MOD: 4;
   };
 
   module Img
