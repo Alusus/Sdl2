@@ -65,6 +65,10 @@
     عرف _دقة_المؤقت_: لقب Hints.TIMER_RESOLUTION؛
   };
 
+  عرف خـيارات_النافذة: {
+    عرف _ملء_الشاشة_: لقب WindowFlags.FULL_SCREEN؛
+  }؛
+
   عرف عـصا_التحكم: لقب Joystick؛
   @دمج صنف Joystick
   {

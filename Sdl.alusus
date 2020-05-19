@@ -84,6 +84,10 @@ module Sdl
     def VIDEO_HIGHDPI_DISABLED: "SDL_VIDEO_HIGHDPI_DISABLED";
   };
 
+  def WindowFlags: {
+    def FULL_SCREEN: 1;
+  };
+
   type Joystick
   {
     @shared @expname[SDL_NumJoysticks] function getCount ()=>Int;
