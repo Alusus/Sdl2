@@ -98,6 +98,7 @@
   @دمج صنف Renderer
   {
     عرف أنشئ: لقب create؛
+    عرف عين_حجم_رقعة_الرسم: لقب setLogicalSize؛
     عرف عين_لون_الرسم: لقب setDrawColor؛
     عرف نظف: لقب clear؛
     عرف اعرض: لقب present؛

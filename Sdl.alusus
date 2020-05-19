@@ -362,6 +362,9 @@ module Sdl
     @shared @expname[SDL_CreateRenderer]
     function create (window: ptr[Window], index: Int, flags: Word) => ptr[Renderer];
 
+    @shared @expname[SDL_RenderSetLogicalSize]
+    function setLogicalSize (renderer: ptr[Renderer], width: Int, height: Int): Int;
+
     @shared @expname[SDL_SetRenderDrawColor]
     function setDrawColor (renderer: ptr[Renderer], r: Word[8], g: Word[8], b: Word[8], a: Word[8]) => Int;
 
