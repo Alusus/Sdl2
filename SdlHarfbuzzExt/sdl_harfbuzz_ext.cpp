@@ -119,6 +119,105 @@ void calculateSurfaceBound(
 }
 
 
+extern "C" void sdlhbext_calculateSize(
+  char const *text, Font *font, int arabic, SDL_Rect &rect
+) {
+	hb_buffer_t *buffer = hb_buffer_create();
+
+  if (arabic) {
+    hb_buffer_set_direction(buffer, HB_DIRECTION_RTL);
+    hb_buffer_set_script(buffer, HB_SCRIPT_ARABIC);
+  } else {
+    hb_buffer_set_direction(buffer, HB_DIRECTION_LTR);
+    hb_buffer_set_script(buffer, HB_SCRIPT_LATIN);
+  }
+
+  int len = strlen(text);
+	hb_buffer_add_utf8(buffer, text, len, 0, len);
+
+	hb_shape(font->hb_font, buffer, NULL, 0);
+
+	unsigned int glyph_count = hb_buffer_get_length(buffer);
+	hb_glyph_info_t *glyph_infos = hb_buffer_get_glyph_infos(buffer, NULL);
+	hb_glyph_position_t *glyph_positions = hb_buffer_get_glyph_positions(buffer, NULL);
+
+	calculateSurfaceBound(
+    glyph_infos,
+		glyph_positions,
+		glyph_count,
+		font->face,
+		rect,
+		FT_LOAD_DEFAULT
+  );
+
+	hb_buffer_destroy(buffer);
+}
+
+
+extern "C" void sdlhbext_render(
+  char const *text, SDL_Color *color, Font *font, int arabic, SDL_Renderer *renderer
+) {
+	hb_buffer_t *buffer = hb_buffer_create();
+
+  if (arabic) {
+    hb_buffer_set_direction(buffer, HB_DIRECTION_RTL);
+    hb_buffer_set_script(buffer, HB_SCRIPT_ARABIC);
+  } else {
+    hb_buffer_set_direction(buffer, HB_DIRECTION_LTR);
+    hb_buffer_set_script(buffer, HB_SCRIPT_LATIN);
+  }
+
+  int len = strlen(text);
+	hb_buffer_add_utf8(buffer, text, len, 0, len);
+
+	hb_shape(font->hb_font, buffer, NULL, 0);
+
+	unsigned int glyph_count = hb_buffer_get_length(buffer);
+	hb_glyph_info_t *glyph_infos = hb_buffer_get_glyph_infos(buffer, NULL);
+	hb_glyph_position_t *glyph_positions = hb_buffer_get_glyph_positions(buffer, NULL);
+
+  SDL_Rect rect;
+
+	calculateSurfaceBound(
+    glyph_infos,
+		glyph_positions,
+		glyph_count,
+		font->face,
+		rect,
+		FT_LOAD_DEFAULT
+  );
+
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
+	int baseline = -rect.y;
+	int x = 0;
+
+	for (unsigned int i = 0; i < glyph_count; i++)
+	{
+		FT_Load_Glyph( font->face,
+			glyph_infos[i].codepoint,
+			FT_LOAD_RENDER | FT_LOAD_DEFAULT);
+
+		SDL_Texture* glyph_texture = createTextureFromFtBitmap(renderer, font->face->glyph->bitmap, *color);
+  	SDL_SetTextureBlendMode(glyph_texture, SDL_BLENDMODE_BLEND);
+
+		SDL_Rect dest;
+		SDL_QueryTexture(glyph_texture, NULL, NULL, &dest.w, &dest.h);
+		dest.x = x + (font->face->glyph->metrics.horiBearingX >> 6) + (glyph_positions[i].x_offset >> 6);
+		dest.y = baseline - (font->face->glyph->metrics.horiBearingY >> 6) - (glyph_positions[i].y_offset >> 6);
+
+
+		SDL_RenderCopy(renderer, glyph_texture, NULL, &dest);
+
+		x += (glyph_positions[i].x_advance >> 6);
+
+		SDL_DestroyTexture(glyph_texture);
+	}
+
+	hb_buffer_destroy(buffer);
+}
+
+
 extern "C" SDL_Texture* sdlhbext_createTexture(
   char const *text, SDL_Color *color, Font *font, int arabic, SDL_Renderer *renderer
 ) {
@@ -164,7 +263,6 @@ extern "C" SDL_Texture* sdlhbext_createTexture(
 	SDL_SetRenderTarget(renderer, target);
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-	SDL_RenderClear(renderer);
 	SDL_RenderFillRect(renderer, NULL);
 
 	int baseline = -rect.y;

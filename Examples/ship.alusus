@@ -8,38 +8,43 @@ Apm.importFile("Alusus/Sdl2", "Sdl.alusus");
 
 def renderer: ptr[Sdl.Renderer];
 
-function init {
-  if Sdl.init(Sdl.INIT_VIDEO | Sdl.INIT_AUDIO) != 0 {
-    Srl.Console.print("SDL initialization failed.\n");
-    exit(1);
-  };
+if Sdl.init(Sdl.INIT_VIDEO | Sdl.INIT_AUDIO) != 0 {
+  Srl.Console.print("SDL initialization failed.\n");
+  exit(1);
+};
+Srl.Console.print("SDL initialized.\n");
 
-  if Sdl.Img.init(Sdl.Img.INIT_PNG) != Sdl.Img.INIT_PNG {
-    Srl.Console.print("SDL IMG initialization failed.\n");
-    exit(1);
-  };
+if Sdl.Img.init(Sdl.Img.INIT_PNG) != Sdl.Img.INIT_PNG {
+  Srl.Console.print("SDL IMG initialization failed.\n");
+  exit(1);
+};
+Srl.Console.print("SDL IMG initialized.\n");
 
-  if Sdl.Audio.init(44100, Sdl.Audio.Format.DEFAULT, 2, 2048) < 0 {
-    Srl.Console.print("SDL audio initialization failed.\n");
-    exit(1);
-  }
-
-  Sdl.Text.init();
-
-  def window: ptr[Sdl.Window] = Sdl.Window.create("Shooter 01", 0, 0, 1280, 720, 0);
-  if window == 0 {
-    Srl.Console.print("SDL window creation failed.\n");
-    exit(1);
-  };
-
-  Sdl.setHint(Sdl.Hints.RENDER_SCALE_QUALITY, "linear");
-
-  renderer = Sdl.Renderer.create(window, -1, Sdl.Renderer.Flags.ACCELERATED);
-  if renderer == 0 {
-    Srl.Console.print("SDL renderer creation failed.\n");
-    exit(1);
-  };
+if Sdl.Audio.init(44100, Sdl.Audio.Format.DEFAULT, 2, 2048) < 0 {
+  Srl.Console.print("SDL audio initialization failed.\n");
+  exit(1);
 }
+Srl.Console.print("SDL audio initialized.\n");
+
+Sdl.Text.init();
+Srl.Console.print("SDL text initialized.\n");
+
+def window: ptr[Sdl.Window] = Sdl.Window.create("Shooter 01", 0, 0, 1280, 720, 0);
+if window == 0 {
+  Srl.Console.print("SDL window creation failed.\n");
+  exit(1);
+};
+Srl.Console.print("SDL window created.\n");
+
+Sdl.setHint(Sdl.Hints.RENDER_SCALE_QUALITY, "linear");
+
+renderer = Sdl.Renderer.create(window, -1, Sdl.Renderer.Flags.ACCELERATED);
+if renderer == 0 {
+  Srl.Console.print("SDL renderer creation failed.\n");
+  exit(1);
+};
+Srl.Console.print("SDL renderer created.\n");
+
 
 def texture: ptr[Sdl.Texture];
 def bigFont: ptr[Sdl.Text.Font];
@@ -54,53 +59,58 @@ def enTitleRect: Sdl.Rect;
 def music: ptr[Sdl.Audio.Music];
 def sound: ptr[Sdl.Audio.Sound];
 
-function prepareResources {
-  texture = Sdl.Img.loadTexture(renderer, "player.png");
+texture = Sdl.Img.loadTexture(renderer, "player.png");
+Srl.Console.print("Texture loaded.\n");
 
-  // Prepare text
-  bigFont = Sdl.Text.openFont("AlususMono.otf", 40);
-  if bigFont == 0 {
-    Srl.Console.print("Failed to load font.\n");
-    exit(1);
-  }
-  smallFont = Sdl.Text.openFont("AlususMono.otf", 20);
-  if smallFont == 0 {
-    Srl.Console.print("Failed to load font.\n");
-    exit(1);
-  }
-
-  def textColor: Sdl.Color;
-
-  textColor.r = 0; textColor.g = 255; textColor.b = 0; textColor.a = 255;
-  arTitleTexture = Sdl.Text.renderText("اخْتِـبـارُ الرُسـوم", textColor~ptr, bigFont, 1, renderer);
-  textColor.r = 0; textColor.g = 0; textColor.b = 0; textColor.a = 255;
-  arDescTexture = Sdl.Text.renderText(
-    "اضْغَط مِفْتاحَ المَسافَةِ لِلمُؤَثِّراتِ الصَوْتِيّة", textColor~ptr, smallFont, 1, renderer
-  );
-
-  textColor.r = 0; textColor.g = 0; textColor.b = 255; textColor.a = 255;
-  enTitleTexture = Sdl.Text.renderText("Video Test", textColor~ptr, bigFont, 0, renderer);
-  textColor.r = 0; textColor.g = 0; textColor.b = 0; textColor.a = 255;
-  enDescTexture = Sdl.Text.renderText(
-    "Press Space for sound effects", textColor~ptr, smallFont, 0, renderer
-  );
-
-  Sdl.Texture.query(arTitleTexture, 0, 0, arTitleRect.w~ptr, arTitleRect.h~ptr);
-  Sdl.Texture.query(arDescTexture, 0, 0, arDescRect.w~ptr, arDescRect.h~ptr);
-  Sdl.Texture.query(enTitleTexture, 0, 0, enTitleRect.w~ptr, enTitleRect.h~ptr);
-
-  music = Sdl.Audio.loadMusic("BoxCat_Games_-_07_-_Inspiration.mp3");
-  if music == 0 {
-    Srl.Console.print("Failed to load music.\n");
-    exit(1);
-  }
-
-  sound = Sdl.Audio.loadWav("bullet_whizzing_by-Mike_Koenig.wav");
-  if sound == 0 {
-    Srl.Console.print("Failed to load sound effect.\n");
-    exit(1);
-  }
+// Prepare text
+bigFont = Sdl.Text.openFont("AlususMono.otf", 40);
+if bigFont == 0 {
+  Srl.Console.print("Failed to load font.\n");
+  exit(1);
 }
+smallFont = Sdl.Text.openFont("AlususMono.otf", 20);
+if smallFont == 0 {
+  Srl.Console.print("Failed to load font.\n");
+  exit(1);
+}
+Srl.Console.print("Fonts loaded.\n");
+
+def textColor: Sdl.Color;
+
+textColor.r = 0; textColor.g = 255; textColor.b = 0; textColor.a = 255;
+arTitleTexture = Sdl.Text.createTextTexture("اخْتِـبـارُ الرُسـوم", textColor~ptr, bigFont, 1, renderer);
+textColor.r = 0; textColor.g = 0; textColor.b = 0; textColor.a = 255;
+arDescTexture = Sdl.Text.createTextTexture(
+  "اضْغَط مِفْتاحَ المَسافَةِ لِلمُؤَثِّراتِ الصَوْتِيّة", textColor~ptr, smallFont, 1, renderer
+);
+
+textColor.r = 0; textColor.g = 0; textColor.b = 255; textColor.a = 255;
+enTitleTexture = Sdl.Text.createTextTexture("Video Test", textColor~ptr, bigFont, 0, renderer);
+textColor.r = 0; textColor.g = 0; textColor.b = 0; textColor.a = 255;
+enDescTexture = Sdl.Text.createTextTexture(
+  "Press Space for sound effects", textColor~ptr, smallFont, 0, renderer
+);
+
+Sdl.Texture.query(arTitleTexture, 0, 0, arTitleRect.w~ptr, arTitleRect.h~ptr);
+Sdl.Texture.query(arDescTexture, 0, 0, arDescRect.w~ptr, arDescRect.h~ptr);
+Sdl.Texture.query(enTitleTexture, 0, 0, enTitleRect.w~ptr, enTitleRect.h~ptr);
+
+Srl.Console.print("Text preparation done.\n");
+
+music = Sdl.Audio.loadMusic("BoxCat_Games_-_07_-_Inspiration.mp3");
+if music == 0 {
+  Srl.Console.print("Failed to load music.\n");
+  exit(1);
+}
+Srl.Console.print("Music loaded.\n");
+
+sound = Sdl.Audio.loadWav("bullet_whizzing_by-Mike_Koenig.wav");
+if sound == 0 {
+  Srl.Console.print("Failed to load sound effect.\n");
+  exit(1);
+}
+Srl.Console.print("Sound loaded.\n");
+
 
 function blit (texture: ptr[Sdl.Texture], x: Int, y: Int)
 {
@@ -113,9 +123,6 @@ function blit (texture: ptr[Sdl.Texture], x: Int, y: Int)
 };
 
 function main {
-  init();
-  prepareResources();
-
   Sdl.Audio.play(music, 1);
 
   def x: array[Int, 100];

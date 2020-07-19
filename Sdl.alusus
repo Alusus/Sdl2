@@ -2,6 +2,7 @@ import "globals.alusus";
 import "libSDL2-2.0.so.0";
 import "libSDL2_image-2.0.so.0";
 import "libSDL2_mixer-2.0.so.0";
+import "libSDL2_gfx-1.0.so.0";
 import "libsdl_harfbuzz_ext.so";
 
 module Sdl
@@ -429,6 +430,21 @@ module Sdl
     def y: Int;
     def w: Int;
     def h: Int;
+
+    handler this~init() {}
+    handler this~init(x: Int, y: Int, w: Int, h: Int) {
+      this.x = x;
+      this.y = y;
+      this.w = w;
+      this.h = h;
+    }
+    handler this~init(ref[Rect]) this = value;
+    handler this=ref[Rect] {
+      this.x = value.x;
+      this.y = value.y;
+      this.w = value.w;
+      this.h = value.h;
+    }
   };
 
   type Color
@@ -437,6 +453,24 @@ module Sdl
     def g: Word[8];
     def b: Word[8];
     def a: Word[8];
+
+    handler this~init() {}
+    handler this~init(r: Word[8], g: Word[8], b: Word[8], a: Word[8]) {
+      this.r = r;
+      this.g = g;
+      this.b = b;
+      this.a = a;
+    }
+    handler this~init(ref[Color]) this = value;
+    handler this = ref[Color] {
+      this.r = value.r;
+      this.g = value.g;
+      this.b = value.b;
+      this.a = value.a;
+    }
+    handler this~cast[Word] {
+      return (this.r~cast[Word] << 24) | (this.g~cast[Word] << 16) | (this.b~cast[Word] << 8) | this.a;
+    }
   };
 
   def Format: {
@@ -463,6 +497,39 @@ module Sdl
     @expname[IMG_LoadTexture]
     function loadTexture(renderer: ptr[Renderer], file: ptr[Char]) => ptr[Texture];
   };
+
+  module Drawing
+  {
+    @expname[pixelColor]
+    func pixel (renderer: ptr[Renderer], x: Int[16], y: Int[16], color: Word): Int;
+
+    @expname[thickLineColor]
+    func line (
+      renderer: ptr[Renderer], x1: Int[16], y1: Int[16], x2: Int[16], y2: Int[16], width: Word[8], color: Word
+    ): Int;
+
+    @expname[rectangleColor]
+    func rectangle (renderer: ptr[Renderer], x1: Int[16], y1: Int[16], x2: Int[16], y2: Int[16], color: Word): Int;
+
+    @expname[boxColor]
+    func filledRectangle (
+      renderer: ptr[Renderer], x1: Int[16], y1: Int[16], x2: Int[16], y2: Int[16], color: Word
+    ): Int;
+
+    @expname[polygonColor]
+    func polygon (renderer: ptr[Renderer], vx: ptr[array[Int[16]]], vy: ptr[array[Int[16]]], n: Int, color: Word): Int;
+
+    @expname[filledPolygonColor]
+    func filledPolygon (
+      renderer: ptr[Renderer], vx: ptr[array[Int[16]]], vy: ptr[array[Int[16]]], n: Int, color: Word
+    ): Int;
+
+    @expname[ellipseColor]
+    func ellipse (renderer: ptr[Renderer], x: Int[16], y: Int[16], rx: Int[16], ry: Int[16], color: Word): Int;
+
+    @expname[filledEllipseColor]
+    func filledEllipse (renderer: ptr[Renderer], x: Int[16], y: Int[16], rx: Int[16], ry: Int[16], color: Word): Int;
+  }
 
   module Audio
   {
@@ -551,8 +618,18 @@ module Sdl
     @expname[sdlhbext_releaseFont]
     func releaseFont (ptr[Font]);
 
-    @expname[sdlhbext_createTexture]
+    @expname[sdlhbext_calculateSize]
+    func calculateTextSize (
+      text: ptr[array[Char]], color: ptr[Color], font: ptr[Font], arabic: Int, rect: ptr[Rect]
+    );
+
+    @expname[sdlhbext_render]
     func renderText (
+      text: ptr[array[Char]], color: ptr[Color], font: ptr[Font], arabic: Int, renderer: ptr[Renderer]
+    );
+
+    @expname[sdlhbext_createTexture]
+    func createTextTexture (
       text: ptr[array[Char]], color: ptr[Color], font: ptr[Font], arabic: Int, renderer: ptr[Renderer]
     ): ptr[Texture];
   };
