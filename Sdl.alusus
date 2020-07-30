@@ -620,12 +620,12 @@ module Sdl
 
     @expname[sdlhbext_calculateSize]
     func calculateTextSize (
-      text: ptr[array[Char]], color: ptr[Color], font: ptr[Font], arabic: Int, rect: ptr[Rect]
+      text: ptr[array[Char]], font: ptr[Font], arabic: Int, rect: ptr[Rect]
     );
 
     @expname[sdlhbext_render]
     func renderText (
-      text: ptr[array[Char]], color: ptr[Color], font: ptr[Font], arabic: Int, renderer: ptr[Renderer]
+      text: ptr[array[Char]], color: ptr[Color], font: ptr[Font], arabic: Int, x: Int, y: Int, renderer: ptr[Renderer]
     );
 
     @expname[sdlhbext_createTexture]

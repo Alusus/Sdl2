@@ -155,7 +155,7 @@ extern "C" void sdlhbext_calculateSize(
 
 
 extern "C" void sdlhbext_render(
-  char const *text, SDL_Color *color, Font *font, int arabic, SDL_Renderer *renderer
+  char const *text, SDL_Color *color, Font *font, int arabic, int x, int y, SDL_Renderer *renderer
 ) {
 	hb_buffer_t *buffer = hb_buffer_create();
 
@@ -189,8 +189,7 @@ extern "C" void sdlhbext_render(
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
-	int baseline = -rect.y;
-	int x = 0;
+	int baseline = y - rect.y;
 
 	for (unsigned int i = 0; i < glyph_count; i++)
 	{
@@ -263,6 +262,7 @@ extern "C" SDL_Texture* sdlhbext_createTexture(
 	SDL_SetRenderTarget(renderer, target);
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+	SDL_RenderClear(renderer);
 	SDL_RenderFillRect(renderer, NULL);
 
 	int baseline = -rect.y;
