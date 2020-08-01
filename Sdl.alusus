@@ -472,7 +472,7 @@ module Sdl
       this.a = value.a;
     }
     handler this~cast[Word] {
-      return (this.r~cast[Word] << 24) | (this.g~cast[Word] << 16) | (this.b~cast[Word] << 8) | this.a;
+      return (this.a~cast[Word] << 24) | (this.b~cast[Word] << 16) | (this.g~cast[Word] << 8) | this.r;
     }
   };
 
