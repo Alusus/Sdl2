@@ -363,6 +363,9 @@ module Sdl
     @shared @expname[SDL_CreateRenderer]
     function create (window: ptr[Window], index: Int, flags: Word) => ptr[Renderer];
 
+    @shared @expname[SDL_CreateSoftwareRenderer]
+    function create (surface: ptr[Surface]) => ptr[Renderer];
+
     @shared @expname[SDL_RenderSetLogicalSize]
     function setLogicalSize (renderer: ptr[Renderer], width: Int, height: Int): Int;
 
