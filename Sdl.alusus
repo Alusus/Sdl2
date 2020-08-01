@@ -24,13 +24,7 @@ module Sdl
   function pumpEvents;
 
   @expname[SDL_RWFromFile]
-  func rwFromFile (filename: ptr[array[Char]], mode: ptr[array[Char]]): ptr;
-
-  @expname[SDL_DestroyTexture]
-  func destroyTexture (ptr[Texture]);
-
-  @expname[SDL_FreeSurface]
-  func freeSurface (ptr[Surface]);
+  function rwFromFile (filename: ptr[array[Char]], mode: ptr[array[Char]]): ptr;
 
   type Event
   {
@@ -381,20 +375,20 @@ module Sdl
     @shared @expname[SDL_RenderCopy]
     function copy (renderer: ptr[Renderer], texture: ptr[Texture], srcRect: ptr[Rect], destRect: ptr[Rect]) => Int;
 
-    @shared @expname[SDL_CreateTextureFromSurface]
-    func createTextureFromSurface (renderer: ptr[Renderer], surface: ptr[Surface]): ptr[Texture];
-
     @shared @expname[SDL_SetRenderTarget]
-    func setRenderTarget (renderer: ptr[Renderer], texture: ptr[Texture]): Int;
+    function setRenderTarget (renderer: ptr[Renderer], texture: ptr[Texture]): Int;
 
     @shared @expname[SDL_RenderDrawRect]
-    func drawRect (renderer: ptr[Renderer], rect: ptr[Rect]): Int;
+    function drawRect (renderer: ptr[Renderer], rect: ptr[Rect]): Int;
 
     @shared @expname[SDL_RenderFillRect]
-    func fillRect (renderer: ptr[Renderer], rect: ptr[Rect]): Int;
+    function fillRect (renderer: ptr[Renderer], rect: ptr[Rect]): Int;
 
     @shared @expname[SDL_SetRenderDrawBlendMode]
     function setBlendMode(renderer: ptr[Renderer], mode: Int): Int;
+
+    @shared @expname[SDL_DestroyRenderer]
+    function destroy(renderer: ptr[Renderer]);
 
     def Flags: {
       def SOFTWARE: 0x00000001;
@@ -405,7 +399,10 @@ module Sdl
   type Texture
   {
     @shared @expname[SDL_CreateTexture]
-    func new (renderer: ptr[Renderer], format: Word, access: Int, w: Int, h: Int): ptr[Texture];
+    function create (renderer: ptr[Renderer], format: Word, access: Int, w: Int, h: Int): ptr[Texture];
+
+    @shared @expname[SDL_CreateTextureFromSurface]
+    function create (renderer: ptr[Renderer], surface: ptr[Surface]): ptr[Texture];
 
     @shared @expname[SDL_QueryTexture]
     function query (texture: ptr[Texture], format: ptr[Word], access: ptr[Int], w: ptr[Int], h: ptr[Int]) => Int;
@@ -416,6 +413,9 @@ module Sdl
     @shared @expname[SDL_SetTextureBlendMode]
     function setBlendMode(texture: ptr[Texture], mode: Int): Int;
 
+    @shared @expname[SDL_DestroyTexture]
+    function destroy (ptr[Texture]);
+
     def Access: {
       def STATIC: 0;
       def STREAMING: 1;
@@ -425,7 +425,14 @@ module Sdl
 
   type Surface
   {
-  }
+    @shared @expname[SDL_CreateRGBSurface]
+    function create(
+      flags: Word, width: Int, height: Int, depth: Int, rMask: Word, gMask: Word, bMask: Word, aMask: Word
+    ): ptr[Surface];
+
+    @shared @expname[SDL_FreeSurface]
+    function free (ptr[Surface]);
+  };
 
   type Rect
   {
@@ -504,34 +511,39 @@ module Sdl
   module Drawing
   {
     @expname[pixelColor]
-    func pixel (renderer: ptr[Renderer], x: Int[16], y: Int[16], color: Word): Int;
+    function pixel (renderer: ptr[Renderer], x: Int[16], y: Int[16], color: Word): Int;
 
     @expname[thickLineColor]
-    func line (
+    function line (
       renderer: ptr[Renderer], x1: Int[16], y1: Int[16], x2: Int[16], y2: Int[16], width: Word[8], color: Word
     ): Int;
 
     @expname[rectangleColor]
-    func rectangle (renderer: ptr[Renderer], x1: Int[16], y1: Int[16], x2: Int[16], y2: Int[16], color: Word): Int;
+    function rectangle (renderer: ptr[Renderer], x1: Int[16], y1: Int[16], x2: Int[16], y2: Int[16], color: Word): Int;
 
     @expname[boxColor]
-    func filledRectangle (
+    function filledRectangle (
       renderer: ptr[Renderer], x1: Int[16], y1: Int[16], x2: Int[16], y2: Int[16], color: Word
     ): Int;
 
     @expname[polygonColor]
-    func polygon (renderer: ptr[Renderer], vx: ptr[array[Int[16]]], vy: ptr[array[Int[16]]], n: Int, color: Word): Int;
+    function polygon (renderer: ptr[Renderer], vx: ptr[array[Int[16]]], vy: ptr[array[Int[16]]], n: Int, color: Word): Int;
+
+    @expname[aapolygonColor]
+    function aaPolygon (
+      renderer: ptr[Renderer], vx: ptr[array[Int[16]]], vy: ptr[array[Int[16]]], n: Int, color: Word
+    ): Int;
 
     @expname[filledPolygonColor]
-    func filledPolygon (
+    function filledPolygon (
       renderer: ptr[Renderer], vx: ptr[array[Int[16]]], vy: ptr[array[Int[16]]], n: Int, color: Word
     ): Int;
 
     @expname[ellipseColor]
-    func ellipse (renderer: ptr[Renderer], x: Int[16], y: Int[16], rx: Int[16], ry: Int[16], color: Word): Int;
+    function ellipse (renderer: ptr[Renderer], x: Int[16], y: Int[16], rx: Int[16], ry: Int[16], color: Word): Int;
 
     @expname[filledEllipseColor]
-    func filledEllipse (renderer: ptr[Renderer], x: Int[16], y: Int[16], rx: Int[16], ry: Int[16], color: Word): Int;
+    function filledEllipse (renderer: ptr[Renderer], x: Int[16], y: Int[16], rx: Int[16], ry: Int[16], color: Word): Int;
   }
 
   module Audio
@@ -610,29 +622,29 @@ module Sdl
     }
 
     @expname[sdlhbext_init]
-    func init;
+    function init;
 
     @expname[sdlhbext_destroy]
-    func destroy;
+    function destroy;
 
     @expname[sdlhbext_openFont]
-    func openFont (filename: ptr[array[Char]], ptSize: Int): ptr[Font];
+    function openFont (filename: ptr[array[Char]], ptSize: Int): ptr[Font];
 
     @expname[sdlhbext_releaseFont]
-    func releaseFont (ptr[Font]);
+    function releaseFont (ptr[Font]);
 
     @expname[sdlhbext_calculateSize]
-    func calculateTextSize (
+    function calculateTextSize (
       text: ptr[array[Char]], font: ptr[Font], arabic: Int, rect: ptr[Rect]
     );
 
     @expname[sdlhbext_render]
-    func renderText (
+    function renderText (
       text: ptr[array[Char]], color: ptr[Color], font: ptr[Font], arabic: Int, x: Int, y: Int, renderer: ptr[Renderer]
     );
 
     @expname[sdlhbext_createTexture]
-    func createTextTexture (
+    function createTextTexture (
       text: ptr[array[Char]], color: ptr[Color], font: ptr[Font], arabic: Int, renderer: ptr[Renderer]
     ): ptr[Texture];
   };

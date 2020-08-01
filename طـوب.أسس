@@ -11,8 +11,6 @@
   عرف عين_تلميح: لقب setHint؛
   عرف استشعر_حدث: لقب pollEvent؛
   عرف ضخ_أحداث: لقب pumpEvents؛
-  عرف أتلف_نقش: لقب destroyTexture؛
-  عرف حرر_سطح: لقب freeSurface؛
 
   عرف حـدث: لقب Event؛
   @دمج عرف Event:
@@ -103,11 +101,11 @@
     عرف نظف: لقب clear؛
     عرف اعرض: لقب present؛
     عرف انسخ: لقب copy؛
-    عرف أنشئ_نقش_من_سطح: لقب createTextureFromSurface؛
     عرف حدد_المرسم: لقب setRenderTarget؛
     عرف ارسم_مستطيل: لقب drawRect؛
     عرف املأ_مستطيل: لقب fillRect؛
     عرف عين_نمط_المزج: لقب setBlendMode؛
+    عرف أتلف: لقب destroy;
 
     عرف عـلامات: {
       عرف _برمجي_: لقب Flags.SOFTWARE؛
@@ -118,11 +116,12 @@
   عرف نـقش: لقب Texture؛
   @دمج صنف Texture
   {
-    عرف أنشئ: لقب new؛
+    عرف أنشئ: لقب create؛
     عرف استفهم: لقب query؛
     عرف غير_الشفافية: لقب setAlphaMod؛
     عرف عين_نمط_المزج: لقب setBlendMode؛
-    
+    عرف أتلف: لقب destroy;
+
     عرف ولـوج: {
       عرف _ساكن_: 0؛
       عرف _تدفق_: 1؛
@@ -131,6 +130,11 @@
   }؛
 
   عرف سـطح: لقب Surface؛
+  @دمج صنف Surface
+  {
+    عرف أنشئ: لقب create؛
+    عرف حرر: لقب free؛
+  };
 
   عرف مـستطيل: لقب Rect؛
   @دمج صنف Rect
@@ -182,6 +186,7 @@
     عرف مستطيل: لقب rectangle؛
     عرف مستطيل_مليئ: لقب filledRectangle؛
     عرف مضلع: لقب polygon؛
+    عرف مضلع_منعم: لقب aaPolygon؛
     عرف مضلع_مليء: لقب filledPolygon؛
     عرف إهليج: لقب ellipse؛
     عرف إهليج_مليء: لقب filledEllipse؛
