@@ -218,6 +218,7 @@
     عرف حرر: لقب free؛
     عرف شغل: لقب play؛
     عرف لاش_قناة: لقب fadeChannelOut؛
+    عرف هل_القناة_مشتغلة: لقب isChannelPlaying؛
     عرف هل_الموسيقى_مشتغلة: لقب isMusicPlaying؛
     عرف هل_الموسيقى_ملبثة: لقب isMusicPaused؛
     عرف ألبث_الموسيقى: لقب pauseMusic؛

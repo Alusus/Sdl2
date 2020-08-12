@@ -596,6 +596,9 @@ module Sdl
     @expname[Mix_FadeOutChannel]
     function fadeChannelOut (channel: Int, milliseconds: Int): Int;
 
+    @expname[Mix_Playing]
+    function isChannelPlaying (channel: Int): Int;
+
     @expname[Mix_PlayMusic]
     function play (music: ptr[Music], loops: Int): Int;
 
