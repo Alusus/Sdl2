@@ -184,7 +184,7 @@
     عرف نقطة: لقب pixel؛
     عرف خط: لقب line؛
     عرف مستطيل: لقب rectangle؛
-    عرف مستطيل_مليئ: لقب filledRectangle؛
+    عرف مستطيل_مليء: لقب filledRectangle؛
     عرف مضلع: لقب polygon؛
     عرف مضلع_منعم: لقب aaPolygon؛
     عرف مضلع_مليء: لقب filledPolygon؛
