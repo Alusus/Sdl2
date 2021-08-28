@@ -2,16 +2,12 @@ import "Srl/srl";
 import "Srl/String";
 import "Core";
 
-if Srl.String.isEqual(Process.platform, "macos") {
-  Core.importFile("libSDL2-2.0.0.dylib");
-  Core.importFile("libSDL2_image-2.0.0.dylib");
-  Core.importFile("libSDL2_mixer-2.0.0.dylib");
-  Core.importFile("libSDL2_gfx-1.0.0.dylib");
-} else {
-  Core.importFile("libSDL2-2.0.so.0");
-  Core.importFile("libSDL2_image-2.0.so.0");
-  Core.importFile("libSDL2_mixer-2.0.so.0");
-  Core.importFile("libSDL2_gfx-1.0.so.0");
+import "libSDL2-2.0.so.0" or "libSDL2-2.0.0.dylib";
+import "libSDL2_image-2.0.so.0" or "libSDL2_image-2.0.0.dylib";
+import "libSDL2_mixer-2.0.so.0" or "libSDL2_mixer-2.0.0.dylib";
+import "libSDL2_gfx-1.0.so.0" or "libSDL2_gfx-1.0.0.dylib";
+
+if !Srl.String.isEqual(Process.platform, "macos") {
   Core.importFile("libsdl_harfbuzz_ext.so");
 }
 
@@ -36,7 +32,7 @@ module Sdl
   @expname[SDL_RWFromFile]
   function rwFromFile (filename: ptr[array[Char]], mode: ptr[array[Char]]): ptr;
 
-  type Event
+  class Event
   {
     def eventType: Word;
     def padding: array[Word, 52];
@@ -47,7 +43,7 @@ module Sdl
     def TEXTINPUT: 0x303u;
   };
 
-  type KeyboardEvent
+  class KeyboardEvent
   {
     def eventType: Word;
     def timestamp: Word;
@@ -59,7 +55,7 @@ module Sdl
     def mod: Word[16];
   };
 
-  type TextInputEvent
+  class TextInputEvent
   {
     def eventType: Word;
     def timestamp: Word;
@@ -93,7 +89,7 @@ module Sdl
     def FULL_SCREEN: 1;
   };
 
-  type Joystick
+  class Joystick
   {
     @shared @expname[SDL_NumJoysticks] function getCount ()=>Int;
     @shared @expname[SDL_JoystickOpen] function open (index: Int)=>ptr[Joystick];
@@ -356,13 +352,13 @@ module Sdl
     function getState (numkeys: ptr[Int]): ptr[array[Word[8]]];
   };
 
-  type Window
+  class Window
   {
     @shared @expname[SDL_CreateWindow]
     function create (title: ptr[Char], x: Int, y: Int, w: Int, h: Int, flags: Word) => ptr[Window];
   };
 
-  type Renderer
+  class Renderer
   {
     @shared @expname[SDL_CreateRenderer]
     function create (window: ptr[Window], index: Int, flags: Word) => ptr[Renderer];
@@ -406,7 +402,7 @@ module Sdl
     };
   };
 
-  type Texture
+  class Texture
   {
     @shared @expname[SDL_CreateTexture]
     function create (renderer: ptr[Renderer], format: Word, access: Int, w: Int, h: Int): ptr[Texture];
@@ -433,7 +429,7 @@ module Sdl
     }
   };
 
-  type Surface
+  class Surface
   {
     @shared @expname[SDL_CreateRGBSurface]
     function create(
@@ -444,7 +440,7 @@ module Sdl
     function free (ptr[Surface]);
   };
 
-  type Rect
+  class Rect
   {
     def x: Int;
     def y: Int;
@@ -467,7 +463,7 @@ module Sdl
     }
   };
 
-  type Color
+  class Color
   {
     def r: Word[8];
     def g: Word[8];
@@ -558,11 +554,11 @@ module Sdl
 
   module Audio
   {
-    type Sound
+    class Sound
     {
     }
 
-    type Music
+    class Music
     {
     }
 
@@ -630,7 +626,7 @@ module Sdl
 
   module Text
   {
-    type Font
+    class Font
     {
     }
 
