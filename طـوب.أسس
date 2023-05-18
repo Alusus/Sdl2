@@ -46,6 +46,34 @@
     عرف نص: لقب text؛
   }؛
 
+  عرف حـدث_تحرك_الفأرة: لقب MouseMotionEvent؛
+  @دمج عرف MouseMotionEvent:
+  {
+    عرف نوع: لقب eventType؛
+    عرف وقت: لقب timestamp؛
+    عرف معرف_النافذة: لقب windowId؛
+    عرف معرف_الفأرة: لقب mouseId؛
+    عرف حالة_الأزرار: لقب buttonState؛
+    عرف س: لقب x؛
+    عرف ص: لقب y؛
+    عرف س_نسبي: لقب xRel؛
+    عرف ص_نسبي: لقب yRel؛
+  }؛
+
+  عرف حـدث_زر_الفأرة: لقب MouseButtonEvent؛
+  @دمج عرف MouseButtonEvent:
+  {
+    عرف نوع: لقب eventType؛
+    عرف وقت: لقب timestamp؛
+    عرف معرف_النافذة: لقب windowId؛
+    عرف معرف_الفأرة: لقب mouseId؛
+    عرف زر: لقب button؛
+    عرف حالة: لقب state؛
+    عرف نقرات: لقب clicks؛
+    عرف س: لقب x؛
+    عرف ص: لقب y؛
+  }؛
+
   عرف تـلميحات: {
     عرف _تسريع_صوان_الصورة_: لقب Hints.FRAMEBUFFER_ACCELERATION؛
     عرف _رسوم_المشغل_: لقب Hints.RENDER_DRIVER؛
@@ -86,10 +114,16 @@
     عرف هات_الحالة: لقب getState؛
   }؛
 
+  عرف فـأرة: لقب Mouse؛
+  @دمج وحدة فـأرة {
+    عرف هات_الحالة: لقب getState؛
+  }؛
+
   عرف نـافذة: لقب Window؛
   @دمج صنف Window
   {
     عرف أنشئ: لقب create؛
+    عرف هات_الأبعاد: لقب getSize؛
   }؛
 
   عرف رسـام: لقب Renderer؛

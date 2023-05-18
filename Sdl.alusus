@@ -41,6 +41,9 @@ module Sdl
     def KEY_DOWN: 0x300u;
     def KEY_UP: 0x301u;
     def TEXTINPUT: 0x303u;
+    def MOUSEMOTION: 0x400u;
+    def MOUSEBUTTONDOWN: 0x401u;
+    def MOUSEBUTTONUP: 0x402u;
   };
 
   class KeyboardEvent
@@ -61,6 +64,32 @@ module Sdl
     def timestamp: Word;
     def windowId: Word;
     def text: array[Char, 32];
+  };
+
+  class MouseMotionEvent
+  {
+    def eventType: Word;
+    def timestamp: Word;
+    def windowId: Word;
+    def mouseId: Word;
+    def buttonState: Word;
+    def x: Int;
+    def y: Int;
+    def xRel: Int;
+    def yRel: Int;
+  };
+
+  class MouseButtonEvent
+  {
+    def eventType: Word;
+    def timestamp: Word;
+    def windowId: Word;
+    def mouseId: Word;
+    def button: Word[8];
+    def state: Word[8];
+    def clicks: Word[8];
+    def x: Int;
+    def y: Int;
   };
 
   def Hints: {
@@ -352,10 +381,19 @@ module Sdl
     function getState (numkeys: ptr[Int]): ptr[array[Word[8]]];
   };
 
+  module Mouse
+  {
+    @expname[SDL_GetMouseState]
+    function getState (x: ptr[Int], y: ptr[Int]): Word;
+  };
+
   class Window
   {
     @shared @expname[SDL_CreateWindow]
     function create (title: ptr[Char], x: Int, y: Int, w: Int, h: Int, flags: Word) => ptr[Window];
+
+    @shared @expname[SDL_GetWindowSize]
+    function getSize (ptr[Window], w: ptr[Int], h: ptr[Int]);
   };
 
   class Renderer
