@@ -54,7 +54,7 @@ brew install sdl2 sdl2_image sdl2_mixer sdl2_gfx
 
 <div dir=ltr>
 
-```alusus
+```
 import "Apm.alusus";
 Apm.importFile("Alusus/Sdl2", "Sdl.alusus");
 ```
@@ -100,7 +100,7 @@ Apm.importFile("Alusus/Sdl2", "Sdl.alusus");
 }
 ```
 
-<div=ltr>
+<div dir=ltr>
 
 ```
 import "Srl/Console.alusus";
