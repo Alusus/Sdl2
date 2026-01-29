@@ -1,4 +1,5 @@
 # SDL2 for Alusus
+[[العربية]](README.ar.md)
 
 SDL2 bindings for the [Alusus Programming Language](https://alusus.org), providing comprehensive access to SDL2 graphics, audio, and input functionality with full Arabic language support.
 
