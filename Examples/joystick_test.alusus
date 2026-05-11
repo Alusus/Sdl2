@@ -2,7 +2,7 @@ import "Srl/Console.alusus";
 import "Srl/System.alusus";
 import "Srl/Fs.alusus";
 import "Apm.alusus";
-Apm.importFile("Alusus/Sdl2", "Sdl.alusus");
+Apm.importPackage("Alusus/Sdl2@0.1", "Sdl.alusus");
 
 if Sdl.init(Sdl.INIT_JOYSTICK) == 0 {
   Srl.Console.print("Initialized SDL successfully.\n");

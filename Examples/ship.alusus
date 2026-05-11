@@ -3,7 +3,7 @@ import "Srl/System.alusus";
 import "Srl/Fs.alusus";
 import "Apm.alusus";
 import "Spp";
-Apm.importFile("Alusus/Sdl2", "Sdl.alusus");
+Apm.importPackage("Alusus/Sdl2@0.1", "Sdl.alusus");
 
 @expname[exit] function exit (status: Int);
 

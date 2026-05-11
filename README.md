@@ -47,7 +47,7 @@ Using Alusus Package Manager (APM):
 
 ```alusus
 import "Apm.alusus";
-Apm.importFile("Alusus/Sdl2", "Sdl.alusus");
+Apm.importPackage("Alusus/Sdl2@0.1", "Sdl.alusus");
 ```
 
 ## Usage
@@ -57,7 +57,7 @@ Apm.importFile("Alusus/Sdl2", "Sdl.alusus");
 ```alusus
 import "Srl/Console.alusus";
 import "Apm.alusus";
-Apm.importFile("Alusus/Sdl2", "Sdl.alusus");
+Apm.importPackage("Alusus/Sdl2@0.1", "Sdl.alusus");
 
 // Initialize SDL
 Sdl.init(Sdl.INIT_VIDEO);
