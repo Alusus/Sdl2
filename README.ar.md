@@ -351,9 +351,9 @@ alusus Examples/ship.alusus
 - `طـوب.حـدث._خروج_` / `Sdl.Event.QUIT`: حدث إغلاق النافذة
 - `طـوب.حـدث._زر_للأسفل_` / `Sdl.Event.KEY_DOWN`: حدث ضغط مفتاح
 - `طـوب.حـدث._زر_للأعلى_` / `Sdl.Event.KEY_UP`: حدث رفع مفتاح
-- `Sdl.Event.MOUSEMOTION`: حركة الفأرة
-- `Sdl.Event.MOUSEBUTTONDOWN`: ضغط زر الفأرة
-- `Sdl.Event.MOUSEBUTTONUP`: رفع زر الفأرة
+- `طـوب.حـدث._حركة_الفأرة_` / `Sdl.Event.MOUSEMOTION`: حركة الفأرة
+- `طـوب.حـدث._زر_الفأرة_للأسفل_` / `Sdl.Event.MOUSEBUTTONDOWN`: ضغط زر الفأرة
+- `طـوب.حـدث._زر_الفأرة_للأعلى_` / `Sdl.Event.MOUSEBUTTONUP`: رفع زر الفأرة
 
 ### علامات الرسام
 - `طـوب.رسـام.عـلامات._برمجي_` / `Sdl.Renderer.Flags.SOFTWARE`: رسم برمجي
