@@ -5,47 +5,47 @@ SDL2 bindings for the [Alusus Programming Language](https://alusus.org), providi
 
 ## Features
 
-- **Graphics**: Window creation, rendering, textures, surfaces, and 2D drawing primitives
-- **Audio**: Music playback and sound effects via SDL2_mixer
-- **Input**: Keyboard, mouse, and joystick/gamepad support
-- **Image Loading**: PNG, JPG, TIF, and WEBP format support via SDL2_image
-- **Text Rendering**: Advanced text rendering with HarfBuzz integration for proper Arabic text shaping (Linux only)
-- **Bilingual API**: Full Arabic language bindings alongside English API
-- **Cross-Platform**: Support for Linux and macOS
+* **Graphics**: Window creation, rendering, textures, surfaces, and 2D drawing primitives
+* **Audio**: Music playback and sound effects via SDL2_mixer
+* **Input**: Keyboard, mouse, and joystick/gamepad support
+* **Image Loading**: PNG, JPG, TIF, and WEBP format support via SDL2_image
+* **Text Rendering**: Advanced text rendering with HarfBuzz integration for proper Arabic text shaping (Linux only)
+* **Bilingual API**: Full Arabic language bindings alongside English API
+* **Cross-Platform**: Support for Linux and macOS
 
 ## Components
 
 This library provides bindings for:
 
-- **SDL2**: Core graphics, windowing, and event handling
-- **SDL2_image**: Image file loading (PNG, JPG, WEBP, TIF)
-- **SDL2_mixer**: Audio playback (music and sound effects)
-- **SDL2_gfx**: Advanced 2D drawing primitives
-- **HarfBuzz Extension**: Custom text rendering with proper Arabic text shaping
+* **SDL2**: Core graphics, windowing, and event handling
+* **SDL2_image**: Image file loading (PNG, JPG, WEBP, TIF)
+* **SDL2_mixer**: Audio playback (music and sound effects)
+* **SDL2_gfx**: Advanced 2D drawing primitives
+* **HarfBuzz Extension**: Custom text rendering with proper Arabic text shaping
 
 ## Requirements
 
 ### System Dependencies
 
 #### Linux
-```bash
+```
 sudo apt-get install libsdl2-2.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-gfx-1.0-0
 ```
 
 #### macOS
-```bash
+```
 brew install sdl2 sdl2_image sdl2_mixer sdl2_gfx
 ```
 
 ### Alusus
-- Alusus compiler version 0.8 or later
-- Installation instructions available at [alusus.org](https://alusus.org)
+* Alusus compiler version 0.8 or later
+* Installation instructions available at [alusus.org](https://alusus.org)
 
 ## Installation
 
 Using Alusus Package Manager (APM):
 
-```alusus
+```
 import "Apm.alusus";
 Apm.importPackage("Alusus/Sdl2@0.1", "Sdl.alusus");
 ```
@@ -54,7 +54,7 @@ Apm.importPackage("Alusus/Sdl2@0.1", "Sdl.alusus");
 
 ### Basic Example (English)
 
-```alusus
+```
 import "Srl/Console.alusus";
 import "Apm.alusus";
 Apm.importPackage("Alusus/Sdl2@0.1", "Sdl.alusus");
@@ -91,7 +91,7 @@ while running {
 
 ### Loading and Displaying Images
 
-```alusus
+```
 // Initialize image subsystem
 Sdl.Img.init(Sdl.Img.INIT_PNG);
 
@@ -105,7 +105,7 @@ Sdl.Renderer.copy(renderer, texture, 0, destRect~ptr);
 
 ### Playing Audio
 
-```alusus
+```
 // Initialize audio
 Sdl.Audio.init(44100, Sdl.Audio.Format.DEFAULT, 2, 2048);
 
@@ -120,7 +120,7 @@ Sdl.Audio.play(-1, sound, 0, -1); // Play on first available channel
 
 ### Text Rendering (Linux only)
 
-```alusus
+```
 // Initialize text subsystem
 Sdl.Text.init();
 
@@ -137,7 +137,7 @@ Sdl.Text.renderText("مرحبا بالعالم", color~ptr, font, 1, 100, 100, r
 
 ### Keyboard Input
 
-```alusus
+```
 // Get keyboard state
 def keyStates: ptr[array[Word[8]]] = Sdl.Keyboard.getState(0);
 
@@ -149,7 +149,7 @@ if keyStates~cnt(Sdl.Keyboard.ScanCode.SPACE) != 0 {
 
 ### Mouse Input
 
-```alusus
+```
 // Get mouse state
 def x: Int;
 def y: Int;
@@ -160,49 +160,49 @@ def buttons: Word = Sdl.Mouse.getState(x~ptr, y~ptr);
 
 The `Examples/` directory contains sample programs:
 
-- **ship.alusus**: Complete game demo with graphics, audio, text rendering, and keyboard input
-- **joystick_test.alusus**: Joystick/gamepad input demonstration
+* **ship.alusus**: Complete game demo with graphics, audio, text rendering, and keyboard input
+* **joystick_test.alusus**: Joystick/gamepad input demonstration
 
 To run an example:
 
-```bash
+```
 alusus Examples/ship.alusus
 ```
 
 ## Platform-Specific Notes
 
 ### Linux
-- Full functionality including HarfBuzz text rendering
-- Text rendering supports both LTR (English) and RTL (Arabic) scripts
+* Full functionality including HarfBuzz text rendering
+* Text rendering supports both LTR (English) and RTL (Arabic) scripts
 
 ### macOS
-- Graphics, audio, and input fully supported
-- HarfBuzz text rendering is disabled on macOS
+* Graphics, audio, and input fully supported
+* HarfBuzz text rendering is disabled on macOS
 
 ## API Reference
 
 ### Initialization Flags
-- `Sdl.INIT_VIDEO`: Initialize video subsystem
-- `Sdl.INIT_AUDIO`: Initialize audio subsystem
-- `Sdl.INIT_JOYSTICK`: Initialize joystick subsystem
+* `Sdl.INIT_VIDEO`: Initialize video subsystem
+* `Sdl.INIT_AUDIO`: Initialize audio subsystem
+* `Sdl.INIT_JOYSTICK`: Initialize joystick subsystem
 
 ### Event Types
-- `Sdl.Event.QUIT`: Window close event
-- `Sdl.Event.KEY_DOWN`: Key press event
-- `Sdl.Event.KEY_UP`: Key release event
-- `Sdl.Event.MOUSEMOTION`: Mouse movement
-- `Sdl.Event.MOUSEBUTTONDOWN`: Mouse button press
-- `Sdl.Event.MOUSEBUTTONUP`: Mouse button release
+* `Sdl.Event.QUIT`: Window close event
+* `Sdl.Event.KEY_DOWN`: Key press event
+* `Sdl.Event.KEY_UP`: Key release event
+* `Sdl.Event.MOUSEMOTION`: Mouse movement
+* `Sdl.Event.MOUSEBUTTONDOWN`: Mouse button press
+* `Sdl.Event.MOUSEBUTTONUP`: Mouse button release
 
 ### Renderer Flags
-- `Sdl.Renderer.Flags.SOFTWARE`: Software rendering
-- `Sdl.Renderer.Flags.ACCELERATED`: Hardware-accelerated rendering
+* `Sdl.Renderer.Flags.SOFTWARE`: Software rendering
+* `Sdl.Renderer.Flags.ACCELERATED`: Hardware-accelerated rendering
 
 ### Blend Modes
-- `Sdl.BlendMode.NONE`: No blending
-- `Sdl.BlendMode.BLEND`: Alpha blending
-- `Sdl.BlendMode.ADD`: Additive blending
-- `Sdl.BlendMode.MOD`: Modulative blending
+* `Sdl.BlendMode.NONE`: No blending
+* `Sdl.BlendMode.BLEND`: Alpha blending
+* `Sdl.BlendMode.ADD`: Additive blending
+* `Sdl.BlendMode.MOD`: Modulative blending
 
 ## License
 
@@ -214,7 +214,7 @@ Contributions are welcome! Please submit issues and pull requests on the project
 
 ## Links
 
-- [Alusus Website](https://alusus.org)
-- [SDL2 Documentation](https://wiki.libsdl.org)
-- [Alusus Documentation](https://alusus.org/documentation)
+* [Alusus Website](https://alusus.org)
+* [SDL2 Documentation](https://wiki.libsdl.org)
+* [Alusus Documentation](https://alusus.org/documentation)
 
