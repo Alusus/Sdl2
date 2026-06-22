@@ -1,4 +1,4 @@
-# طـوب (SDL2)
+# طـوب (Sdl2)
 [[English]](README.md)
 
 <div dir=rtl>
