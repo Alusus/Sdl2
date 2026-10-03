@@ -139,12 +139,12 @@ module Sdl
 
   class Joystick
   {
-    @shared @expname[SDL_NumJoysticks] function getCount ()=>Int;
-    @shared @expname[SDL_JoystickOpen] function open (index: Int)=>ptr[Joystick];
-    @shared @expname[SDL_JoystickNumAxes] function getAxesCount (joy: ptr[Joystick]) => Int;
-    @shared @expname[SDL_JoystickGetAxis] function getAxis (joy: ptr[Joystick], axis: Int) => Int[16];
-    @shared @expname[SDL_JoystickGetButton] function getButton (joy: ptr[Joystick], button: Int) => Word[8];
-    @shared @expname[SDL_JoystickUpdate] function update;
+    @expname[SDL_NumJoysticks] function getCount ()=>Int;
+    @expname[SDL_JoystickOpen] function open (index: Int)=>ptr[Joystick];
+    @expname[SDL_JoystickNumAxes] function getAxesCount (joy: ptr[Joystick]) => Int;
+    @expname[SDL_JoystickGetAxis] function getAxis (joy: ptr[Joystick], axis: Int) => Int[16];
+    @expname[SDL_JoystickGetButton] function getButton (joy: ptr[Joystick], button: Int) => Word[8];
+    @expname[SDL_JoystickUpdate] function update;
   };
 
   module Keyboard
@@ -408,49 +408,49 @@ module Sdl
 
   class Window
   {
-    @shared @expname[SDL_CreateWindow]
+    @expname[SDL_CreateWindow]
     function create (title: ptr[Char], x: Int, y: Int, w: Int, h: Int, flags: Word) => ptr[Window];
 
-    @shared @expname[SDL_GetWindowSize]
+    @expname[SDL_GetWindowSize]
     function getSize (ptr[Window], w: ptr[Int], h: ptr[Int]);
   };
 
   class Renderer
   {
-    @shared @expname[SDL_CreateRenderer]
+    @expname[SDL_CreateRenderer]
     function create (window: ptr[Window], index: Int, flags: Word) => ptr[Renderer];
 
-    @shared @expname[SDL_CreateSoftwareRenderer]
+    @expname[SDL_CreateSoftwareRenderer]
     function create (surface: ptr[Surface]) => ptr[Renderer];
 
-    @shared @expname[SDL_RenderSetLogicalSize]
+    @expname[SDL_RenderSetLogicalSize]
     function setLogicalSize (renderer: ptr[Renderer], width: Int, height: Int): Int;
 
-    @shared @expname[SDL_SetRenderDrawColor]
+    @expname[SDL_SetRenderDrawColor]
     function setDrawColor (renderer: ptr[Renderer], r: Word[8], g: Word[8], b: Word[8], a: Word[8]) => Int;
 
-    @shared @expname[SDL_RenderClear]
+    @expname[SDL_RenderClear]
     function clear (renderer: ptr[Renderer]) => Int;
 
-    @shared @expname[SDL_RenderPresent]
+    @expname[SDL_RenderPresent]
     function present (renderer: ptr[Renderer]);
 
-    @shared @expname[SDL_RenderCopy]
+    @expname[SDL_RenderCopy]
     function copy (renderer: ptr[Renderer], texture: ptr[Texture], srcRect: ptr[Rect], destRect: ptr[Rect]) => Int;
 
-    @shared @expname[SDL_SetRenderTarget]
+    @expname[SDL_SetRenderTarget]
     function setRenderTarget (renderer: ptr[Renderer], texture: ptr[Texture]): Int;
 
-    @shared @expname[SDL_RenderDrawRect]
+    @expname[SDL_RenderDrawRect]
     function drawRect (renderer: ptr[Renderer], rect: ptr[Rect]): Int;
 
-    @shared @expname[SDL_RenderFillRect]
+    @expname[SDL_RenderFillRect]
     function fillRect (renderer: ptr[Renderer], rect: ptr[Rect]): Int;
 
-    @shared @expname[SDL_SetRenderDrawBlendMode]
+    @expname[SDL_SetRenderDrawBlendMode]
     function setBlendMode(renderer: ptr[Renderer], mode: Int): Int;
 
-    @shared @expname[SDL_DestroyRenderer]
+    @expname[SDL_DestroyRenderer]
     function destroy(renderer: ptr[Renderer]);
 
     def Flags: {
@@ -461,22 +461,22 @@ module Sdl
 
   class Texture
   {
-    @shared @expname[SDL_CreateTexture]
+    @expname[SDL_CreateTexture]
     function create (renderer: ptr[Renderer], format: Word, access: Int, w: Int, h: Int): ptr[Texture];
 
-    @shared @expname[SDL_CreateTextureFromSurface]
+    @expname[SDL_CreateTextureFromSurface]
     function create (renderer: ptr[Renderer], surface: ptr[Surface]): ptr[Texture];
 
-    @shared @expname[SDL_QueryTexture]
+    @expname[SDL_QueryTexture]
     function query (texture: ptr[Texture], format: ptr[Word], access: ptr[Int], w: ptr[Int], h: ptr[Int]) => Int;
 
-    @shared @expname[SDL_SetTextureAlphaMod]
+    @expname[SDL_SetTextureAlphaMod]
     function setAlphaMod (texture: ptr[Texture], alpha: Word[8]) => Int;
 
-    @shared @expname[SDL_SetTextureBlendMode]
+    @expname[SDL_SetTextureBlendMode]
     function setBlendMode(texture: ptr[Texture], mode: Int): Int;
 
-    @shared @expname[SDL_DestroyTexture]
+    @expname[SDL_DestroyTexture]
     function destroy (ptr[Texture]);
 
     def Access: {
@@ -488,12 +488,12 @@ module Sdl
 
   class Surface
   {
-    @shared @expname[SDL_CreateRGBSurface]
+    @expname[SDL_CreateRGBSurface]
     function create(
       flags: Word, width: Int, height: Int, depth: Int, rMask: Word, gMask: Word, bMask: Word, aMask: Word
     ): ptr[Surface];
 
-    @shared @expname[SDL_FreeSurface]
+    @expname[SDL_FreeSurface]
     function free (ptr[Surface]);
   };
 
