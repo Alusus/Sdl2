@@ -56,7 +56,7 @@ brew install sdl2 sdl2_image sdl2_mixer sdl2_gfx
 
 ```
 import "Apm.alusus";
-Apm.importPackage("Alusus/Sdl2@0.1", "Sdl.alusus");
+Apm.importPackage("Alusus/Sdl2@0.2", "Sdl.alusus");
 ```
 
 </div>
@@ -105,7 +105,7 @@ Apm.importPackage("Alusus/Sdl2@0.1", "Sdl.alusus");
 ```
 import "Srl/Console.alusus";
 import "Apm.alusus";
-Apm.importPackage("Alusus/Sdl2@0.1", "Sdl.alusus");
+Apm.importPackage("Alusus/Sdl2@0.2", "Sdl.alusus");
 
 // Initialize SDL
 Sdl.init(Sdl.INIT_VIDEO);
