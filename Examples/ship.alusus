@@ -205,7 +205,7 @@ function main {
 
     Sdl.Renderer.present(renderer);
 
-    Srl.System.sleep(1000);
+    Srl.System.usleep(1000);
   };
 };
 
