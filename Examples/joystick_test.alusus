@@ -18,7 +18,7 @@ if Sdl.init(Sdl.INIT_JOYSTICK) == 0 {
         for i = 0, i < 8, ++i Srl.Console.print(" -- button %d: %d", i, Sdl.Joystick.getButton(joy, i)~cast[Int]);
         Srl.Console.print("         \r");
         Srl.Fs.flush(0~cast[ptr[Srl.Fs.File]]);
-        Srl.System.sleep(1000);
+        Srl.System.usleep(1000);
       }
     } else {
       Srl.Console.print("Failed to open joystick.\n");
